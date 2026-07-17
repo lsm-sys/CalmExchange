@@ -11,7 +11,8 @@
     "db:migrate": "prisma migrate dev",
     "db:push": "prisma db push",
     "db:seed": "prisma db seed",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "neon:init": "neon init --agent cursor"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -29,6 +30,7 @@
     "@types/react-dom": "^19.1.6",
     "eslint": "^9.31.0",
     "eslint-config-next": "^15.4.1",
+    "neonctl": "^2.33.2",
     "prisma": "^6.12.0",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"
