@@ -11,6 +11,7 @@
     "db:migrate": "prisma migrate dev",
     "db:push": "prisma db push",
     "db:seed": "prisma db seed",
+    "db:verify": "tsx prisma/verify-setup.ts",
     "db:studio": "prisma studio",
     "neon:init": "neon init --agent cursor"
   },

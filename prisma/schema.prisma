@@ -8,8 +8,64 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+enum Visibility {
+  PRIVATE
+  PUBLIC
+}
+
+model User {
+  id          String       @id @default(cuid())
+  email       String       @unique
+  name        String?
+  createdAt   DateTime     @default(now())
+  notes       Note[]
+  meditations Meditation[]
+  votes       Vote[]
+}
+
 model Note {
   id        String   @id @default(uuid())
+  ownerId   String
+  owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   title     String
   createdAt DateTime @default(now())
+}
+
+model Category {
+  id          String       @id @default(cuid())
+  category    String
+  meditations Meditation[]
+}
+
+model Meditation {
+  id          String     @id @default(cuid())
+  ownerId     String
+  owner       User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  title       String
+  content     String
+  description String?
+  categoryId  String?
+  category    Category?  @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  visibility  Visibility @default(PRIVATE)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  publishedAt DateTime?
+  votes       Vote[]
+
+  @@index([ownerId, updatedAt])
+  @@index([visibility, createdAt])
+}
+
+model Vote {
+  id           String     @id @default(cuid())
+  userId       String
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  meditationId String
+  meditation   Meditation @relation(fields: [meditationId], references: [id], onDelete: Cascade)
+  value        Int        @default(1)
+  createdAt    DateTime   @default(now())
+
+  @@unique([userId, meditationId])
+  @@index([meditationId])
+  @@index([userId])
 }
