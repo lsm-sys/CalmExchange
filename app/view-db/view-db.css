@@ -1,0 +1,245 @@
+.view-db {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.view-db-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.view-db-kicker {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 0.25rem;
+}
+
+.view-db-subtitle,
+.view-db-hint,
+.view-db-muted {
+  color: var(--muted);
+}
+
+.view-db-subtitle {
+  margin-top: 0.25rem;
+}
+
+.view-db-link {
+  color: inherit;
+  text-decoration: none;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  white-space: nowrap;
+}
+
+.view-db-panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.view-db-panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.view-db-segment {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  margin: 0.75rem 0;
+}
+
+.view-db-segment button {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  padding: 0.625rem 1rem;
+  cursor: pointer;
+}
+
+.view-db-segment button.is-active {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.view-db-table-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.view-db-table-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+}
+
+.view-db-table-item strong {
+  display: block;
+}
+
+.view-db-toolbar {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.view-db-btn {
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: inherit;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.875rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.view-db-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.view-db-btn-primary {
+  background: var(--foreground);
+  color: var(--background);
+  border-color: var(--foreground);
+}
+
+.view-db-btn-danger {
+  color: #dc2626;
+  border-color: #fecaca;
+}
+
+.view-db-error {
+  color: #dc2626;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 0.5rem;
+  padding: 0.875rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.view-db-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--card);
+}
+
+.view-db-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.view-db-data-table th,
+.view-db-data-table td {
+  border-bottom: 1px solid var(--border);
+  padding: 0.625rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.view-db-data-table th {
+  background: color-mix(in srgb, var(--card) 80%, var(--foreground) 5%);
+  white-space: nowrap;
+}
+
+.view-db-actions {
+  display: flex;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.view-db-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.view-db-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 50;
+}
+
+.view-db-modal {
+  width: min(560px, 100%);
+  max-height: 90vh;
+  overflow: auto;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+}
+
+.view-db-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  margin-top: 1rem;
+}
+
+.view-db-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.view-db-field input,
+.view-db-field select {
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.625rem;
+  background: var(--background);
+  color: inherit;
+}
+
+.view-db-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .view-db-error {
+    color: #fca5a5;
+    background: #450a0a;
+    border-color: #7f1d1d;
+  }
+
+  .view-db-btn-danger {
+    color: #fca5a5;
+    border-color: #7f1d1d;
+  }
+}
