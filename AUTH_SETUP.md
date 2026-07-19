@@ -197,7 +197,42 @@ https://calm-exchange.vercel.app/api/auth/callback/google
 
 Код проекта также использует `VERCEL_PROJECT_PRODUCTION_URL`, чтобы preview-деплои не подставляли случайный домен.
 
-### Ошибка на Vercel: «Server error / problem with the server configuration»
+### «Server error / problem with the server configuration»
+
+Страница `/api/auth/signin/google` падает, а `/api/auth/providers` открывается — **не хватает секретов на Vercel**.
+
+Проверка (откройте в браузере):
+
+```
+https://calm-exchange.vercel.app/api/auth/check-config
+```
+
+Должно быть:
+
+```json
+{
+  "ok": true,
+  "hasAuthSecret": true,
+  "hasGoogleClientId": true,
+  "hasGoogleClientSecret": true,
+  "hasDatabaseUrl": true,
+  "authBaseUrl": "https://calm-exchange.vercel.app"
+}
+```
+
+Если `"ok": false` — добавьте недостающие переменные в **Vercel → Settings → Environment Variables → Production** (и Preview):
+
+| Переменная | Пример |
+|------------|--------|
+| `AUTH_SECRET` | строка из PowerShell (шаг 1) |
+| `AUTH_URL` | `https://calm-exchange.vercel.app` |
+| `GOOGLE_CLIENT_ID` | `....apps.googleusercontent.com` |
+| `GOOGLE_CLIENT_SECRET` | `GOCSPX-...` |
+| `DATABASE_URL` | pooled Neon URL |
+
+**Без кавычек** в значениях Vercel. После изменений — **Redeploy**.
+
+### Ошибка на Vercel: «Server error» (общая)
 
 Если при нажатии «Войти через Google» открывается ошибка сервера, почти всегда на Vercel **не заданы переменные Auth.js**.
 
