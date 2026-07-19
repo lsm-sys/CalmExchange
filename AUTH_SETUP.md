@@ -158,6 +158,7 @@ npm run dev
    | Name | Value |
    |------|-------|
    | `AUTH_SECRET` | тот же или новый секрет (лучше отдельный для prod) |
+   | `AUTH_URL` | `https://calm-exchange.vercel.app` |
    | `GOOGLE_CLIENT_ID` | Client ID |
    | `GOOGLE_CLIENT_SECRET` | Client secret |
    | `DATABASE_URL` | pooled Neon URL |
@@ -165,6 +166,38 @@ npm run dev
 
 4. В Google Console добавьте production redirect URI (шаг 2.3)
 5. **Deployments** → **Redeploy** последнего деплоя
+
+### Ошибка на Vercel: «Server error / problem with the server configuration»
+
+Если при нажатии «Войти через Google» открывается ошибка сервера, почти всегда на Vercel **не заданы переменные Auth.js**.
+
+Проверьте в **Settings → Environment Variables → Production**:
+
+1. `AUTH_SECRET` — **обязательно** (без него вход не работает)
+2. `GOOGLE_CLIENT_ID`
+3. `GOOGLE_CLIENT_SECRET`
+4. `AUTH_URL` = `https://calm-exchange.vercel.app`
+5. `DATABASE_URL` и `DIRECT_URL`
+
+После добавления переменных — **Redeploy** (не просто push, а именно redeploy).
+
+Проверка: откройте  
+[https://calm-exchange.vercel.app/api/auth/signin/google](https://calm-exchange.vercel.app/api/auth/signin/google)  
+— должна открыться страница Google, а не «Server error».
+
+### Google Console для production
+
+**Authorized redirect URIs** (точное совпадение):
+
+```
+https://calm-exchange.vercel.app/api/auth/callback/google
+```
+
+**Authorized JavaScript origins**:
+
+```
+https://calm-exchange.vercel.app
+```
 
 ---
 

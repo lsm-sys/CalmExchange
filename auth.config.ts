@@ -37,4 +37,6 @@ export const authConfig = {
   },
   trustHost: true,
   secret: process.env.AUTH_SECRET,
+  // Явный URL production (Vercel). Можно задать в Environment Variables.
+  ...(process.env.AUTH_URL ? { url: process.env.AUTH_URL } : {}),
 } satisfies NextAuthConfig;
