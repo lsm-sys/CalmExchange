@@ -82,6 +82,41 @@ h1 {
   font-style: italic;
 }
 
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.home-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.home-user {
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.home-link {
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.875rem;
+  font-size: 0.875rem;
+}
+
+.home-link-primary {
+  background: var(--foreground);
+  color: var(--background);
+  border-color: var(--foreground);
+}
+
 .error {
   color: #dc2626;
   background: #fef2f2;
