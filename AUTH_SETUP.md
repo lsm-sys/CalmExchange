@@ -167,6 +167,36 @@ npm run dev
 4. В Google Console добавьте production redirect URI (шаг 2.3)
 5. **Deployments** → **Redeploy** последнего деплоя
 
+### Ошибка `redirect_uri_mismatch` на preview-URL Vercel
+
+В **Détails de la requête** Google может показать не production-домен, а preview:
+
+```
+redirect_uri=https://calm-exchange-xxxxx.vercel.app/api/auth/callback/google
+```
+
+Это происходит, если вы открываете **ссылку на конкретный деплой** (preview), а не production.
+
+**Решение A (рекомендуется):** входите только через production:
+
+```
+https://calm-exchange.vercel.app/login
+```
+
+**Решение B:** задайте на Vercel (для **Production** и **Preview**):
+
+```
+AUTH_URL=https://calm-exchange.vercel.app
+```
+
+В Google Console достаточно одного redirect URI:
+
+```
+https://calm-exchange.vercel.app/api/auth/callback/google
+```
+
+Код проекта также использует `VERCEL_PROJECT_PRODUCTION_URL`, чтобы preview-деплои не подставляли случайный домен.
+
 ### Ошибка на Vercel: «Server error / problem with the server configuration»
 
 Если при нажатии «Войти через Google» открывается ошибка сервера, почти всегда на Vercel **не заданы переменные Auth.js**.
