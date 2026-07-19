@@ -207,15 +207,14 @@ https://calm-exchange.vercel.app/api/auth/callback/google
 https://calm-exchange.vercel.app/api/auth/check-config
 ```
 
-Должно быть:
+Должно быть `"ok": true` и все `"valid*": true`. Если `"hints"` не пустой — исправьте значения (часто это placeholder из `.env.example`).
 
 ```json
 {
   "ok": true,
-  "hasAuthSecret": true,
-  "hasGoogleClientId": true,
-  "hasGoogleClientSecret": true,
-  "hasDatabaseUrl": true,
+  "validAuthSecret": true,
+  "validGoogleClientId": true,
+  "validGoogleClientSecret": true,
   "authBaseUrl": "https://calm-exchange.vercel.app"
 }
 ```
