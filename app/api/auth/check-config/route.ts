@@ -1,3 +1,4 @@
+import { prisma } from "@/lib/prisma";
 import { getAuthBaseUrl, getAuthSecret } from "@/lib/auth/env";
 
 function validateAuthEnv() {
@@ -9,6 +10,7 @@ function validateAuthEnv() {
   const hasGoogleClientId = googleClientId.length > 0;
   const hasGoogleClientSecret = googleClientSecret.length > 0;
   const hasDatabaseUrl = Boolean(process.env.DATABASE_URL?.trim());
+  const authUrlEnv = process.env.AUTH_URL?.trim() ?? null;
 
   const validAuthSecret = authSecret.length >= 32;
   const validGoogleClientId =
@@ -17,6 +19,10 @@ function validateAuthEnv() {
   const validGoogleClientSecret =
     googleClientSecret.startsWith("GOCSPX-") &&
     !googleClientSecret.includes("your-google-client-secret");
+  const validAuthUrl =
+    !authUrlEnv ||
+    authUrlEnv === "https://calm-exchange.vercel.app" ||
+    authUrlEnv === "http://localhost:3000";
 
   const ok =
     hasAuthSecret &&
@@ -25,7 +31,8 @@ function validateAuthEnv() {
     hasDatabaseUrl &&
     validAuthSecret &&
     validGoogleClientId &&
-    validGoogleClientSecret;
+    validGoogleClientSecret &&
+    validAuthUrl;
 
   return {
     ok,
@@ -36,24 +43,43 @@ function validateAuthEnv() {
     validAuthSecret,
     validGoogleClientId,
     validGoogleClientSecret,
+    validAuthUrl,
     authSecretLength: authSecret.length,
     googleClientIdSuffix: googleClientId.slice(-30) || null,
+    authUrlEnv,
     authBaseUrl: getAuthBaseUrl() ?? null,
     hints: [
       !validAuthSecret &&
-        "AUTH_SECRET слишком короткий (нужно ≥ 32 символов). Сгенерируйте заново.",
+        "AUTH_SECRET слишком короткий (нужно ≥ 32 символов).",
       !validGoogleClientId &&
-        "GOOGLE_CLIENT_ID должен заканчиваться на .apps.googleusercontent.com (не placeholder).",
+        "GOOGLE_CLIENT_ID должен заканчиваться на .apps.googleusercontent.com.",
       !validGoogleClientSecret &&
-        "GOOGLE_CLIENT_SECRET должен начинаться с GOCSPX- (скопируйте из Google Console).",
+        "GOOGLE_CLIENT_SECRET должен начинаться с GOCSPX-.",
+      !validAuthUrl &&
+        "AUTH_URL должен быть https://calm-exchange.vercel.app (без /api/auth).",
     ].filter(Boolean),
   };
 }
 
-/**
- * Безопасная диагностика (не раскрывает секреты целиком).
- * Откройте /api/auth/check-config на Vercel.
- */
 export async function GET() {
-  return Response.json(validateAuthEnv());
+  const envCheck = validateAuthEnv();
+  let databaseOk = false;
+  let databaseError: string | null = null;
+
+  try {
+    await prisma.session.count();
+    databaseOk = true;
+  } catch (error) {
+    databaseError =
+      error instanceof Error ? error.message : "Database connection failed";
+  }
+
+  return Response.json({
+    ...envCheck,
+    databaseOk,
+    databaseError,
+    ok: envCheck.ok && databaseOk,
+  });
 }
+
+export const runtime = "nodejs";

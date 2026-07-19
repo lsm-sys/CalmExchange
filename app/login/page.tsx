@@ -9,15 +9,14 @@ type LoginPageProps = {
 
 const AUTH_ERRORS: Record<string, string> = {
   Configuration:
-    "Ошибка конфигурации на сервере. На Vercel проверьте AUTH_SECRET, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET и выполните Redeploy.",
+    "Ошибка конфигурации Auth.js. Проверьте /api/auth/check-config и переменные Vercel.",
   AccessDenied:
-    "Доступ запрещён Google. Если приложение в режиме Testing — добавьте ваш email в Test users (Google Cloud Console).",
-  Verification:
-    "Ошибка верификации. Попробуйте снова или проверьте redirect URI в Google Console.",
-  OAuthSignin: "Не удалось начать вход через Google. Проверьте Client ID и Client Secret.",
+    "Доступ запрещён Google. Добавьте email в Test users (Google Cloud Console).",
+  Verification: "Ошибка верификации. Попробуйте снова.",
+  OAuthSignin: "Не удалось начать OAuth. Проверьте GOOGLE_CLIENT_ID и GOOGLE_CLIENT_SECRET.",
   OAuthCallback:
-    "Ошибка после возврата из Google. Проверьте redirect URI: https://calm-exchange.vercel.app/api/auth/callback/google",
-  OAuthCreateAccount: "Не удалось создать пользователя в базе. Проверьте DATABASE_URL на Vercel.",
+    "Ошибка callback. Redirect URI: https://calm-exchange.vercel.app/api/auth/callback/google",
+  OAuthCreateAccount: "Не удалось создать пользователя. Проверьте DATABASE_URL и миграции.",
   Default: "Не удалось войти. Попробуйте снова.",
 };
 

@@ -1,10 +1,10 @@
 import type { NextAuthConfig } from "next-auth";
 import Google from "next-auth/providers/google";
-import { getAuthBaseUrl, getAuthSecret } from "@/lib/auth/env";
+import { getAuthSecret } from "@/lib/auth/env";
 
 /**
- * Edge-совместимая часть конфигурации Auth.js.
- * Используется в middleware (без Prisma).
+ * Edge-совместимая часть конфигурации Auth.js (middleware).
+ * Не добавляйте сюда session callback с user — в middleware user может быть undefined.
  */
 export const authConfig = {
   providers: [
@@ -29,14 +29,7 @@ export const authConfig = {
 
       return !!auth?.user;
     },
-    session({ session, user }) {
-      if (session.user) {
-        session.user.id = user.id;
-      }
-      return session;
-    },
   },
   trustHost: true,
   secret: getAuthSecret(),
-  ...(getAuthBaseUrl() ? { url: getAuthBaseUrl() } : {}),
 } satisfies NextAuthConfig;
