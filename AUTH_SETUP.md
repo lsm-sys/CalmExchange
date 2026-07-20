@@ -197,9 +197,24 @@ https://calm-exchange.vercel.app/api/auth/callback/google
 
 Код проекта также использует `VERCEL_PROJECT_PRODUCTION_URL`, чтобы preview-деплои не подставляли случайный домен.
 
-### «Server error / problem with the server configuration»
+### «Server error» на `/api/auth/signin/google` в браузере
 
-Страница `/api/auth/signin/google` падает, а `/api/auth/providers` открывается — **не хватает секретов на Vercel**.
+**Это нормально**, если вы открываете этот URL **напрямую** (GET в адресной строке).
+
+В Auth.js v5 при кастомной странице входа (`pages.signIn: "/login"`) прямой GET на  
+`/api/auth/signin/google` **не поддерживается** — Auth.js показывает «Server error / Configuration».
+
+**Правильная проверка:**
+
+1. Откройте [https://calm-exchange.vercel.app/login](https://calm-exchange.vercel.app/login)
+2. Нажмите **«Войти через Google»** — форма отправляет POST (server action `signIn`)
+3. Должен открыться экран выбора аккаунта Google
+
+Если `/api/auth/check-config` возвращает `"ok": true`, а `/login` всё равно не работает — смотрите раздел ниже про переменные Vercel.
+
+### «Server error» при нажатии кнопки на `/login`
+
+Если падает **кнопка** на `/login`, а не прямой URL — **не хватает секретов на Vercel** или неверные Google credentials.
 
 Проверка (откройте в браузере):
 
@@ -233,7 +248,7 @@ https://calm-exchange.vercel.app/api/auth/check-config
 
 ### Ошибка на Vercel: «Server error» (общая)
 
-Если при нажатии «Войти через Google» открывается ошибка сервера, почти всегда на Vercel **не заданы переменные Auth.js**.
+Если при нажатии «Войти через Google» **на странице `/login`** открывается ошибка сервера, почти всегда на Vercel **не заданы переменные Auth.js**.
 
 Проверьте в **Settings → Environment Variables → Production**:
 
@@ -246,8 +261,10 @@ https://calm-exchange.vercel.app/api/auth/check-config
 После добавления переменных — **Redeploy** (не просто push, а именно redeploy).
 
 Проверка: откройте  
-[https://calm-exchange.vercel.app/api/auth/signin/google](https://calm-exchange.vercel.app/api/auth/signin/google)  
-— должна открыться страница Google, а не «Server error».
+[https://calm-exchange.vercel.app/login](https://calm-exchange.vercel.app/login)  
+и нажмите «Войти через Google» — должен открыться Google, а не «Server error».
+
+**Не проверяйте** прямой GET на `/api/auth/signin/google` — с кастомной страницей `/login` он всегда показывает ошибку.
 
 ### Google Console для production
 

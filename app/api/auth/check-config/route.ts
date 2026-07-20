@@ -79,6 +79,11 @@ export async function GET() {
     databaseOk,
     databaseError,
     ok: envCheck.ok && databaseOk,
+    loginUrl: getAuthBaseUrl()
+      ? `${getAuthBaseUrl()}/login`
+      : "/login",
+    signInNote:
+      "GET /api/auth/signin/google в браузере не работает с кастомной страницей /login (Auth.js v5). Используйте /login и кнопку «Войти через Google».",
   });
 }
 

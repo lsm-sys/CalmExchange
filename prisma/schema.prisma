@@ -90,6 +90,7 @@ model Meditation {
   categoryId  String?
   category    Category?  @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   visibility  Visibility @default(PRIVATE)
+  isFavorite  Boolean    @default(false)
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
   publishedAt DateTime?
@@ -97,6 +98,7 @@ model Meditation {
 
   @@index([ownerId, updatedAt])
   @@index([visibility, createdAt])
+  @@index([ownerId, isFavorite])
 }
 
 model Vote {

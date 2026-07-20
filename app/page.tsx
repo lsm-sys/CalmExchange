@@ -21,7 +21,7 @@ export default async function Home() {
   }
 
   return (
-    <main>
+    <main className="home-main">
       <header className="home-header">
         <div>
           <h1>CalmExchange</h1>

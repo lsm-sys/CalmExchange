@@ -1,15 +1,17 @@
 import {
   listMeditationsSchema,
-  listMyMeditations,
+  listPublicMeditations,
 } from "@/lib/meditations";
 import { requireSession } from "@/lib/auth/session";
 import { MeditationsView } from "@/components/dashboard/MeditationsView";
 
-type DashboardPageProps = {
+type PublicPageProps = {
   searchParams: Promise<{ q?: string; page?: string }>;
 };
 
-export default async function DashboardPage({ searchParams }: DashboardPageProps) {
+export default async function PublicMeditationsPage({
+  searchParams,
+}: PublicPageProps) {
   const session = await requireSession();
   const params = await searchParams;
 
@@ -18,11 +20,11 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
     search: params.q,
   });
 
-  const data = await listMyMeditations(session.user.id, listParams);
+  const data = await listPublicMeditations(listParams);
 
   return (
     <MeditationsView
-      mode="mine"
+      mode="public"
       currentUserId={session.user.id}
       initialData={data}
       initialSearch={params.q ?? ""}
