@@ -1,0 +1,128 @@
+{
+  "metadata": {
+    "title": "CalmExchange",
+    "description": "Next.js + Prisma + Neon PostgreSQL"
+  },
+  "common": {
+    "loading": "Loading…",
+    "cancel": "Cancel",
+    "save": "Save",
+    "create": "Create",
+    "saving": "Saving…",
+    "user": "User",
+    "close": "Close"
+  },
+  "home": {
+    "subtitle": "Meditation exchange",
+    "cabinet": "Dashboard",
+    "signIn": "Sign in",
+    "dbCheck": "PostgreSQL (Neon) connection check",
+    "dbError": "Could not connect to the database. Check the DATABASE_URL variable.",
+    "dbEmpty": "Database connected. No notes yet."
+  },
+  "auth": {
+    "title": "Sign in",
+    "subtitle": "Sign in with Google to manage your meditations.",
+    "signInGoogle": "Sign in with Google",
+    "backHome": "Back to home",
+    "errors": {
+      "Configuration": "Auth.js configuration error. Check /api/auth/check-config and Vercel environment variables.",
+      "AccessDenied": "Access denied by Google. Add your email to Test users in Google Cloud Console.",
+      "Verification": "Verification error. Please try again.",
+      "OAuthSignin": "Could not start OAuth. Check GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET.",
+      "OAuthCallback": "Callback error. Redirect URI: https://calm-exchange.vercel.app/api/auth/callback/google",
+      "OAuthCreateAccount": "Could not create user. Check DATABASE_URL and migrations.",
+      "Default": "Sign in failed. Please try again."
+    }
+  },
+  "nav": {
+    "mine": "My meditations",
+    "public": "Public",
+    "favorites": "Favorites",
+    "history": "History",
+    "settings": "Settings",
+    "logout": "Sign out"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "newMeditation": "New meditation",
+    "searchPlaceholder": "Search by title or content…",
+    "sortRecent": "By date",
+    "sortPopular": "By popularity",
+    "pagination": "Page {page} of {totalPages} · {total} total",
+    "back": "Back",
+    "forward": "Next"
+  },
+  "meditations": {
+    "mine": {
+      "subtitle": "My meditations",
+      "emptyTitle": "You have no meditations yet",
+      "emptyHint": "Create your first one — click «+ New meditation»"
+    },
+    "public": {
+      "subtitle": "Public meditations",
+      "emptyTitle": "No public meditations yet",
+      "emptyHint": "Create a meditation in «My meditations», enable «Public» — it will appear here and others can like it 👍"
+    },
+    "favorites": {
+      "subtitle": "Favorites",
+      "emptyTitle": "No favorites yet",
+      "emptyHint": "Star a meditation in «My meditations»"
+    }
+  },
+  "meditationForm": {
+    "editTitle": "Edit meditation",
+    "createTitle": "New meditation",
+    "editDescription": "Change the title, content, or visibility.",
+    "createDescription": "Create a meditation for personal use or publication.",
+    "titleLabel": "Title",
+    "titlePlaceholder": "Morning practice",
+    "contentLabel": "Meditation text",
+    "contentPlaceholder": "Describe the practice, steps, intention…",
+    "publicLabel": "Public meditation",
+    "publicHint": "Visible to everyone on the «Public» tab"
+  },
+  "meditationCard": {
+    "removeFavorite": "Remove from favorites",
+    "addFavorite": "Add to favorites",
+    "edit": "Edit",
+    "makePrivate": "Make private",
+    "makePublic": "Make public",
+    "delete": "Delete",
+    "deleteTitle": "Delete meditation?",
+    "deleteDescription": "«{title}» will be permanently deleted.",
+    "liked": "You liked this",
+    "likePrompt": "Like this?"
+  },
+  "like": {
+    "remove": "Remove like",
+    "add": "Like",
+    "failed": "Could not update like",
+    "tryLater": "Please try again later",
+    "loginRequired": "Sign in to like meditations",
+    "notFound": "Meditation not found or unavailable"
+  },
+  "settings": {
+    "subtitle": "Settings",
+    "language": "Language",
+    "languageDescription": "Choose the interface language. Your choice is saved in the browser.",
+    "comingSoonTitle": "Coming soon…",
+    "comingSoonDescription": "Profile, notification, and privacy settings will appear in future versions."
+  },
+  "history": {
+    "subtitle": "History",
+    "comingSoonTitle": "Coming soon…",
+    "comingSoonDescription": "Your listening history and recently opened meditations will appear here."
+  },
+  "errors": {
+    "invalidData": "Invalid data",
+    "invalidId": "Invalid identifier",
+    "notFoundOrForbidden": "Meditation not found or access denied"
+  },
+  "validation": {
+    "titleRequired": "Title is required",
+    "titleMax": "Maximum 200 characters",
+    "contentRequired": "Meditation text is required",
+    "contentMax": "Maximum 10000 characters"
+  }
+}

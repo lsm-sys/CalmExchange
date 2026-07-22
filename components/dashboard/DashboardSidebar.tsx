@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import {
   Bookmark,
   Globe,
@@ -23,12 +24,12 @@ type DashboardSidebarProps = {
 };
 
 const NAV_ITEMS = [
-  { href: "/dashboard", label: "Мои медитации", icon: LayoutGrid, exact: true },
-  { href: "/dashboard/public", label: "Публичные", icon: Globe },
-  { href: "/dashboard/favorites", label: "Избранное", icon: Bookmark },
-  { href: "/dashboard/history", label: "История", icon: History },
-  { href: "/dashboard/settings", label: "Настройки", icon: Settings },
-] as const;
+  { href: "/dashboard", labelKey: "mine" as const, icon: LayoutGrid, exact: true },
+  { href: "/dashboard/public", labelKey: "public" as const, icon: Globe },
+  { href: "/dashboard/favorites", labelKey: "favorites" as const, icon: Bookmark },
+  { href: "/dashboard/history", labelKey: "history" as const, icon: History },
+  { href: "/dashboard/settings", labelKey: "settings" as const, icon: Settings },
+];
 
 function UserAvatar({
   name,
@@ -59,6 +60,8 @@ function UserAvatar({
 
 export function DashboardSidebar({ user }: DashboardSidebarProps) {
   const pathname = usePathname();
+  const t = useTranslations("nav");
+  const tCommon = useTranslations("common");
 
   return (
     <aside
@@ -72,7 +75,7 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
         <UserAvatar name={user.name} image={user.image} />
         <div className="min-w-0">
           <p className="truncate text-base font-semibold text-[var(--sidebar-foreground)]">
-            {formatShortName(user.name)}
+            {formatShortName(user.name, tCommon("user"))}
           </p>
           {user.email ? (
             <p className="truncate text-xs text-[var(--sidebar-foreground)]/70">
@@ -83,7 +86,7 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
       </div>
 
       <nav className="flex flex-1 flex-col gap-1">
-        {NAV_ITEMS.map(({ href, label, icon: Icon, ...rest }) => {
+        {NAV_ITEMS.map(({ href, labelKey, icon: Icon, ...rest }) => {
           const exact = "exact" in rest && rest.exact;
           const isActive = exact
             ? pathname === href
@@ -101,11 +104,10 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
               )}
             >
               <Icon className="h-4 w-4 shrink-0" />
-              {label}
+              {t(labelKey)}
             </Link>
           );
         })}
-
       </nav>
 
       <form action={signOutAction} className="mt-6">
@@ -114,7 +116,7 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
           className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[var(--sidebar-foreground)]/80 transition-colors hover:bg-white/40 hover:text-[var(--sidebar-foreground)]"
         >
           <LogOut className="h-4 w-4" />
-          Выйти
+          {t("logout")}
         </button>
       </form>
     </aside>

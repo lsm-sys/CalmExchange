@@ -1,7 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useState, useTransition } from "react";
+import { useCallback, useEffect, useMemo, useState, useTransition } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Loader2, Plus, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,40 +24,6 @@ type MeditationsViewProps = {
   initialSort?: "popular" | "recent";
 };
 
-const MODE_CONFIG: Record<
-  MeditationsViewMode,
-  {
-    subtitle: string;
-    emptyTitle: string;
-    emptyHint: string;
-    canCreate: boolean;
-    showOwnerActions: boolean;
-  }
-> = {
-  mine: {
-    subtitle: "Мои медитации",
-    emptyTitle: "У вас пока нет медитаций",
-    emptyHint: "Создайте первую — нажмите «+ Новая медитация»",
-    canCreate: true,
-    showOwnerActions: true,
-  },
-  public: {
-    subtitle: "Публичные медитации",
-    emptyTitle: "Публичных медитаций пока нет",
-    emptyHint:
-      "Создайте медитацию в «Мои медитации», включите «Публичная» — она появится здесь, и другие смогут ставить лайки 👍",
-    canCreate: false,
-    showOwnerActions: true,
-  },
-  favorites: {
-    subtitle: "Избранное",
-    emptyTitle: "В избранном пока пусто",
-    emptyHint: "Отметьте медитацию звёздочкой в разделе «Мои медитации»",
-    canCreate: false,
-    showOwnerActions: true,
-  },
-};
-
 export function MeditationsView({
   mode,
   currentUserId,
@@ -67,7 +34,37 @@ export function MeditationsView({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const config = MODE_CONFIG[mode];
+  const t = useTranslations("dashboard");
+  const tm = useTranslations("meditations");
+
+  const modeConfig = useMemo(
+    () => ({
+      mine: {
+        subtitle: tm("mine.subtitle"),
+        emptyTitle: tm("mine.emptyTitle"),
+        emptyHint: tm("mine.emptyHint"),
+        canCreate: true,
+        showOwnerActions: true,
+      },
+      public: {
+        subtitle: tm("public.subtitle"),
+        emptyTitle: tm("public.emptyTitle"),
+        emptyHint: tm("public.emptyHint"),
+        canCreate: false,
+        showOwnerActions: true,
+      },
+      favorites: {
+        subtitle: tm("favorites.subtitle"),
+        emptyTitle: tm("favorites.emptyTitle"),
+        emptyHint: tm("favorites.emptyHint"),
+        canCreate: false,
+        showOwnerActions: true,
+      },
+    }),
+    [tm],
+  );
+
+  const config = modeConfig[mode];
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<MeditationItem | null>(null);
@@ -77,7 +74,6 @@ export function MeditationsView({
 
   const { items, page, totalPages, total } = initialData;
 
-  // Синхронизация sort из URL (назад/вперёд в браузере)
   useEffect(() => {
     if (mode !== "public") {
       return;
@@ -87,7 +83,6 @@ export function MeditationsView({
     setSort(urlSort);
   }, [searchParams, mode]);
 
-  // Debounced search → обновление URL
   useEffect(() => {
     const timer = setTimeout(() => {
       const params = new URLSearchParams(searchParams.toString());
@@ -113,7 +108,6 @@ export function MeditationsView({
     return () => clearTimeout(timer);
   }, [search, pathname, router, searchParams]);
 
-  // Сортировка публичного списка → URL
   useEffect(() => {
     if (mode !== "public") {
       return;
@@ -169,13 +163,13 @@ export function MeditationsView({
   return (
     <>
       <DashboardHeader
-        title="Личный кабинет"
+        title={t("title")}
         subtitle={config.subtitle}
         actions={
           config.canCreate ? (
             <Button onClick={openCreate}>
               <Plus className="h-4 w-4" />
-              Новая медитация
+              {t("newMeditation")}
             </Button>
           ) : null
         }
@@ -187,7 +181,7 @@ export function MeditationsView({
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Поиск по заголовку или тексту…"
+            placeholder={t("searchPlaceholder")}
             className="pl-9"
           />
           {isNavigating ? (
@@ -204,7 +198,7 @@ export function MeditationsView({
               onClick={() => setSort("recent")}
               disabled={isNavigating}
             >
-              По дате
+              {t("sortRecent")}
             </Button>
             <Button
               type="button"
@@ -213,7 +207,7 @@ export function MeditationsView({
               onClick={() => setSort("popular")}
               disabled={isNavigating}
             >
-              По популярности
+              {t("sortPopular")}
             </Button>
           </div>
         ) : null}
@@ -228,7 +222,7 @@ export function MeditationsView({
           {config.canCreate ? (
             <Button className="mt-6" onClick={openCreate}>
               <Plus className="h-4 w-4" />
-              Новая медитация
+              {t("newMeditation")}
             </Button>
           ) : null}
         </div>
@@ -251,7 +245,7 @@ export function MeditationsView({
       {totalPages > 1 ? (
         <div className="mt-8 flex items-center justify-between border-t pt-4 text-sm text-muted-foreground">
           <span>
-            Страница {page} из {totalPages} · всего {total}
+            {t("pagination", { page, totalPages, total })}
           </span>
           <div className="flex gap-2">
             <Button
@@ -260,7 +254,7 @@ export function MeditationsView({
               disabled={page <= 1 || isNavigating}
               onClick={() => goToPage(page - 1)}
             >
-              Назад
+              {t("back")}
             </Button>
             <Button
               variant="outline"
@@ -268,7 +262,7 @@ export function MeditationsView({
               disabled={page >= totalPages || isNavigating}
               onClick={() => goToPage(page + 1)}
             >
-              Вперёд
+              {t("forward")}
             </Button>
           </div>
         </div>

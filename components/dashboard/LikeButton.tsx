@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { ThumbsUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -16,6 +17,7 @@ export function LikeButton({
   initialLiked,
   initialCount,
 }: LikeButtonProps) {
+  const t = useTranslations("like");
   const [liked, setLiked] = useState(initialLiked);
   const [count, setCount] = useState(initialCount);
   const [loading, setLoading] = useState(false);
@@ -32,7 +34,6 @@ export function LikeButton({
     const prevLiked = liked;
     const prevCount = count;
 
-    // Оптимистичное обновление
     setLiked(!liked);
     setCount(liked ? Math.max(0, count - 1) : count + 1);
 
@@ -57,7 +58,7 @@ export function LikeButton({
       if (!response.ok) {
         setLiked(prevLiked);
         setCount(prevCount);
-        setError(data.error ?? "Не удалось поставить лайк");
+        setError(data.error ?? t("failed"));
         return;
       }
 
@@ -66,7 +67,7 @@ export function LikeButton({
     } catch {
       setLiked(prevLiked);
       setCount(prevCount);
-      setError("Попробуйте позже");
+      setError(t("tryLater"));
     } finally {
       setLoading(false);
     }
@@ -84,7 +85,7 @@ export function LikeButton({
         )}
         onClick={handleClick}
         disabled={loading}
-        aria-label={liked ? "Убрать лайк" : "Поставить лайк"}
+        aria-label={liked ? t("remove") : t("add")}
         aria-pressed={liked}
       >
         <ThumbsUp

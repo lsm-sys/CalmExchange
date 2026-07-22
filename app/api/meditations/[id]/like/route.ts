@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { Visibility } from "@prisma/client";
+import { getTranslations } from "next-intl/server";
 import { meditationIdSchema } from "@/lib/meditations/schemas";
 
 export const runtime = "nodejs";
@@ -14,19 +15,16 @@ type ErrorResponse = {
   error: string;
 };
 
-/**
- * POST /api/meditations/[id]/like
- * Toggle-лайк публичной медитации. Только для авторизованных пользователей.
- */
 export async function POST(
   _request: Request,
   context: { params: Promise<{ id: string }> },
 ): Promise<Response> {
   const session = await auth();
+  const t = await getTranslations("like");
 
   if (!session?.user?.id) {
     return Response.json(
-      { error: "Войдите, чтобы ставить лайки" } satisfies ErrorResponse,
+      { error: t("loginRequired") } satisfies ErrorResponse,
       { status: 401 },
     );
   }
@@ -36,7 +34,7 @@ export async function POST(
 
   if (!parsed.success) {
     return Response.json(
-      { error: "Медитация не найдена" } satisfies ErrorResponse,
+      { error: t("notFound") } satisfies ErrorResponse,
       { status: 404 },
     );
   }
@@ -48,7 +46,7 @@ export async function POST(
 
   if (!meditation || meditation.visibility !== Visibility.PUBLIC) {
     return Response.json(
-      { error: "Медитация не найдена или недоступна" } satisfies ErrorResponse,
+      { error: t("notFound") } satisfies ErrorResponse,
       { status: 404 },
     );
   }
@@ -82,7 +80,7 @@ export async function POST(
   } catch (error) {
     console.error("[like] toggle failed:", error);
     return Response.json(
-      { error: "Попробуйте позже" } satisfies ErrorResponse,
+      { error: t("tryLater") } satisfies ErrorResponse,
       { status: 503 },
     );
   }

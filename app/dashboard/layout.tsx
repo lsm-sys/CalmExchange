@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { getTranslations } from "next-intl/server";
 import { requireSession } from "@/lib/auth/session";
 import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
 
@@ -8,6 +9,7 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const session = await requireSession();
+  const t = await getTranslations("common");
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -17,7 +19,7 @@ export default async function DashboardLayout({
           fallback={
             <div className="flex items-center gap-2 text-muted-foreground">
               <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-              Загрузка…
+              {t("loading")}
             </div>
           }
         >

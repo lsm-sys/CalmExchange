@@ -1,0 +1,128 @@
+{
+  "metadata": {
+    "title": "CalmExchange",
+    "description": "Next.js + Prisma + Neon PostgreSQL"
+  },
+  "common": {
+    "loading": "Chargement…",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "create": "Créer",
+    "saving": "Enregistrement…",
+    "user": "Utilisateur",
+    "close": "Fermer"
+  },
+  "home": {
+    "subtitle": "Échange de méditations",
+    "cabinet": "Espace personnel",
+    "signIn": "Se connecter",
+    "dbCheck": "Vérification de la connexion PostgreSQL (Neon)",
+    "dbError": "Impossible de se connecter à la base de données. Vérifiez la variable DATABASE_URL.",
+    "dbEmpty": "Base connectée. Aucune note pour le moment."
+  },
+  "auth": {
+    "title": "Connexion",
+    "subtitle": "Connectez-vous avec Google pour gérer vos méditations.",
+    "signInGoogle": "Se connecter avec Google",
+    "backHome": "Retour à l'accueil",
+    "errors": {
+      "Configuration": "Erreur de configuration Auth.js. Vérifiez /api/auth/check-config et les variables Vercel.",
+      "AccessDenied": "Accès refusé par Google. Ajoutez votre e-mail aux utilisateurs test (Google Cloud Console).",
+      "Verification": "Erreur de vérification. Réessayez.",
+      "OAuthSignin": "Impossible de démarrer OAuth. Vérifiez GOOGLE_CLIENT_ID et GOOGLE_CLIENT_SECRET.",
+      "OAuthCallback": "Erreur de callback. Redirect URI : https://calm-exchange.vercel.app/api/auth/callback/google",
+      "OAuthCreateAccount": "Impossible de créer l'utilisateur. Vérifiez DATABASE_URL et les migrations.",
+      "Default": "Échec de la connexion. Réessayez."
+    }
+  },
+  "nav": {
+    "mine": "Mes méditations",
+    "public": "Publiques",
+    "favorites": "Favoris",
+    "history": "Historique",
+    "settings": "Paramètres",
+    "logout": "Se déconnecter"
+  },
+  "dashboard": {
+    "title": "Espace personnel",
+    "newMeditation": "Nouvelle méditation",
+    "searchPlaceholder": "Rechercher par titre ou texte…",
+    "sortRecent": "Par date",
+    "sortPopular": "Par popularité",
+    "pagination": "Page {page} sur {totalPages} · {total} au total",
+    "back": "Précédent",
+    "forward": "Suivant"
+  },
+  "meditations": {
+    "mine": {
+      "subtitle": "Mes méditations",
+      "emptyTitle": "Vous n'avez pas encore de méditations",
+      "emptyHint": "Créez la première — cliquez sur « + Nouvelle méditation »"
+    },
+    "public": {
+      "subtitle": "Méditations publiques",
+      "emptyTitle": "Aucune méditation publique",
+      "emptyHint": "Créez une méditation dans « Mes méditations », activez « Publique » — elle apparaîtra ici et les autres pourront la liker 👍"
+    },
+    "favorites": {
+      "subtitle": "Favoris",
+      "emptyTitle": "Aucun favori",
+      "emptyHint": "Ajoutez une méditation aux favoris avec l'étoile dans « Mes méditations »"
+    }
+  },
+  "meditationForm": {
+    "editTitle": "Modifier la méditation",
+    "createTitle": "Nouvelle méditation",
+    "editDescription": "Modifiez le titre, le texte ou la visibilité.",
+    "createDescription": "Créez une méditation pour un usage personnel ou public.",
+    "titleLabel": "Titre",
+    "titlePlaceholder": "Pratique du matin",
+    "contentLabel": "Texte de la méditation",
+    "contentPlaceholder": "Décrivez la pratique, les étapes, l'intention…",
+    "publicLabel": "Méditation publique",
+    "publicHint": "Visible par tous dans l'onglet « Publiques »"
+  },
+  "meditationCard": {
+    "removeFavorite": "Retirer des favoris",
+    "addFavorite": "Ajouter aux favoris",
+    "edit": "Modifier",
+    "makePrivate": "Rendre privée",
+    "makePublic": "Rendre publique",
+    "delete": "Supprimer",
+    "deleteTitle": "Supprimer la méditation ?",
+    "deleteDescription": "« {title} » sera supprimée définitivement.",
+    "liked": "Vous aimez",
+    "likePrompt": "Aimer ?"
+  },
+  "like": {
+    "remove": "Retirer le like",
+    "add": "Aimer",
+    "failed": "Impossible de mettre à jour le like",
+    "tryLater": "Réessayez plus tard",
+    "loginRequired": "Connectez-vous pour liker",
+    "notFound": "Méditation introuvable ou indisponible"
+  },
+  "settings": {
+    "subtitle": "Paramètres",
+    "language": "Langue",
+    "languageDescription": "Choisissez la langue de l'interface. Le choix est enregistré dans le navigateur.",
+    "comingSoonTitle": "Bientôt…",
+    "comingSoonDescription": "Les paramètres de profil, notifications et confidentialité arriveront prochainement."
+  },
+  "history": {
+    "subtitle": "Historique",
+    "comingSoonTitle": "Bientôt…",
+    "comingSoonDescription": "L'historique d'écoute et les méditations récemment ouvertes apparaîtront ici."
+  },
+  "errors": {
+    "invalidData": "Données invalides",
+    "invalidId": "Identifiant invalide",
+    "notFoundOrForbidden": "Méditation introuvable ou accès refusé"
+  },
+  "validation": {
+    "titleRequired": "Indiquez un titre",
+    "titleMax": "Maximum 200 caractères",
+    "contentRequired": "Indiquez le texte de la méditation",
+    "contentMax": "Maximum 10 000 caractères"
+  }
+}

@@ -1,11 +1,14 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { getTranslations } from "next-intl/server";
+import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireSession } from "@/lib/auth/session";
 import {
   meditationFormSchema,
   meditationIdSchema,
+  validationMessageKey,
   type MeditationFormValues,
 } from "@/lib/meditations/schemas";
 import { getOwnedMeditation } from "@/lib/meditations/queries";
@@ -27,7 +30,18 @@ export type ActionResult<T = void> =
   | { ok: true; data: T }
   | { ok: false; error: string };
 
-/** Создание медитации — только для авторизованного пользователя. */
+async function translateValidationError(error: z.ZodError): Promise<string> {
+  const t = await getTranslations("validation");
+  const tErrors = await getTranslations("errors");
+  const issue = error.issues[0];
+  const field = String(issue?.path[0] ?? "");
+  const key = validationMessageKey(field, issue?.code ?? "");
+  if (key) {
+    return t(key);
+  }
+  return tErrors("invalidData");
+}
+
 export async function createMeditation(
   input: MeditationFormValues,
 ): Promise<ActionResult<{ id: string }>> {
@@ -35,7 +49,7 @@ export async function createMeditation(
   const parsed = meditationFormSchema.safeParse(input);
 
   if (!parsed.success) {
-    return { ok: false, error: parsed.error.issues[0]?.message ?? "Неверные данные" };
+    return { ok: false, error: await translateValidationError(parsed.error) };
   }
 
   const { title, content, isPublic } = parsed.data;
@@ -55,22 +69,25 @@ export async function createMeditation(
   return { ok: true, data: { id: meditation.id } };
 }
 
-/** Обновление — только владелец. */
 export async function updateMeditation(
   id: string,
   input: MeditationFormValues,
 ): Promise<ActionResult> {
   const session = await requireSession();
+  const t = await getTranslations("errors");
   const idParsed = meditationIdSchema.safeParse({ id });
   const formParsed = meditationFormSchema.safeParse(input);
 
   if (!idParsed.success || !formParsed.success) {
-    return { ok: false, error: "Неверные данные" };
+    if (!formParsed.success) {
+      return { ok: false, error: await translateValidationError(formParsed.error) };
+    }
+    return { ok: false, error: t("invalidData") };
   }
 
   const owned = await getOwnedMeditation(id, session.user.id);
   if (!owned) {
-    return { ok: false, error: "Медитация не найдена или нет доступа" };
+    return { ok: false, error: t("notFoundOrForbidden") };
   }
 
   const { title, content, isPublic } = formParsed.data;
@@ -91,18 +108,18 @@ export async function updateMeditation(
   return { ok: true, data: undefined };
 }
 
-/** Удаление — только владелец. */
 export async function deleteMeditation(id: string): Promise<ActionResult> {
   const session = await requireSession();
+  const t = await getTranslations("errors");
   const idParsed = meditationIdSchema.safeParse({ id });
 
   if (!idParsed.success) {
-    return { ok: false, error: "Неверный идентификатор" };
+    return { ok: false, error: t("invalidId") };
   }
 
   const owned = await getOwnedMeditation(id, session.user.id);
   if (!owned) {
-    return { ok: false, error: "Медитация не найдена или нет доступа" };
+    return { ok: false, error: t("notFoundOrForbidden") };
   }
 
   await prisma.meditation.delete({ where: { id } });
@@ -110,18 +127,20 @@ export async function deleteMeditation(id: string): Promise<ActionResult> {
   return { ok: true, data: undefined };
 }
 
-/** Переключение public/private — только владелец. */
-export async function togglePublic(id: string): Promise<ActionResult<{ isPublic: boolean }>> {
+export async function togglePublic(
+  id: string,
+): Promise<ActionResult<{ isPublic: boolean }>> {
   const session = await requireSession();
+  const t = await getTranslations("errors");
   const idParsed = meditationIdSchema.safeParse({ id });
 
   if (!idParsed.success) {
-    return { ok: false, error: "Неверный идентификатор" };
+    return { ok: false, error: t("invalidId") };
   }
 
   const owned = await getOwnedMeditation(id, session.user.id);
   if (!owned) {
-    return { ok: false, error: "Медитация не найдена или нет доступа" };
+    return { ok: false, error: t("notFoundOrForbidden") };
   }
 
   const nextPublic = owned.visibility !== "PUBLIC";
@@ -137,20 +156,20 @@ export async function togglePublic(id: string): Promise<ActionResult<{ isPublic:
   return { ok: true, data: { isPublic: updated.visibility === "PUBLIC" } };
 }
 
-/** Переключение избранного — только владелец. */
 export async function toggleFavorite(
   id: string,
 ): Promise<ActionResult<{ isFavorite: boolean }>> {
   const session = await requireSession();
+  const t = await getTranslations("errors");
   const idParsed = meditationIdSchema.safeParse({ id });
 
   if (!idParsed.success) {
-    return { ok: false, error: "Неверный идентификатор" };
+    return { ok: false, error: t("invalidId") };
   }
 
   const owned = await getOwnedMeditation(id, session.user.id);
   if (!owned) {
-    return { ok: false, error: "Медитация не найдена или нет доступа" };
+    return { ok: false, error: t("notFoundOrForbidden") };
   }
 
   const updated = await prisma.meditation.update({
@@ -165,7 +184,6 @@ export async function toggleFavorite(
   };
 }
 
-/** Для оптимистичного UI — вернуть одну медитацию после toggle. */
 export async function getMeditationItem(id: string) {
   const session = await requireSession();
   const meditation = await prisma.meditation.findUnique({

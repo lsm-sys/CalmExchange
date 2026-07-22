@@ -1,0 +1,128 @@
+{
+  "metadata": {
+    "title": "CalmExchange",
+    "description": "Next.js + Prisma + Neon PostgreSQL"
+  },
+  "common": {
+    "loading": "Загрузка…",
+    "cancel": "Отмена",
+    "save": "Сохранить",
+    "create": "Создать",
+    "saving": "Сохранение…",
+    "user": "Пользователь",
+    "close": "Закрыть"
+  },
+  "home": {
+    "subtitle": "Обмен медитациями",
+    "cabinet": "Кабинет",
+    "signIn": "Войти",
+    "dbCheck": "Проверка подключения к PostgreSQL (Neon)",
+    "dbError": "Не удалось подключиться к базе данных. Проверьте переменную DATABASE_URL.",
+    "dbEmpty": "База подключена. Заметок пока нет."
+  },
+  "auth": {
+    "title": "Вход",
+    "subtitle": "Войдите через Google, чтобы управлять своими медитациями.",
+    "signInGoogle": "Войти через Google",
+    "backHome": "На главную",
+    "errors": {
+      "Configuration": "Ошибка конфигурации Auth.js. Проверьте /api/auth/check-config и переменные Vercel.",
+      "AccessDenied": "Доступ запрещён Google. Добавьте email в Test users (Google Cloud Console).",
+      "Verification": "Ошибка верификации. Попробуйте снова.",
+      "OAuthSignin": "Не удалось начать OAuth. Проверьте GOOGLE_CLIENT_ID и GOOGLE_CLIENT_SECRET.",
+      "OAuthCallback": "Ошибка callback. Redirect URI: https://calm-exchange.vercel.app/api/auth/callback/google",
+      "OAuthCreateAccount": "Не удалось создать пользователя. Проверьте DATABASE_URL и миграции.",
+      "Default": "Не удалось войти. Попробуйте снова."
+    }
+  },
+  "nav": {
+    "mine": "Мои медитации",
+    "public": "Публичные",
+    "favorites": "Избранное",
+    "history": "История",
+    "settings": "Настройки",
+    "logout": "Выйти"
+  },
+  "dashboard": {
+    "title": "Личный кабинет",
+    "newMeditation": "Новая медитация",
+    "searchPlaceholder": "Поиск по заголовку или тексту…",
+    "sortRecent": "По дате",
+    "sortPopular": "По популярности",
+    "pagination": "Страница {page} из {totalPages} · всего {total}",
+    "back": "Назад",
+    "forward": "Вперёд"
+  },
+  "meditations": {
+    "mine": {
+      "subtitle": "Мои медитации",
+      "emptyTitle": "У вас пока нет медитаций",
+      "emptyHint": "Создайте первую — нажмите «+ Новая медитация»"
+    },
+    "public": {
+      "subtitle": "Публичные медитации",
+      "emptyTitle": "Публичных медитаций пока нет",
+      "emptyHint": "Создайте медитацию в «Мои медитации», включите «Публичная» — она появится здесь, и другие смогут ставить лайки 👍"
+    },
+    "favorites": {
+      "subtitle": "Избранное",
+      "emptyTitle": "В избранном пока пусто",
+      "emptyHint": "Отметьте медитацию звёздочкой в разделе «Мои медитации»"
+    }
+  },
+  "meditationForm": {
+    "editTitle": "Редактировать медитацию",
+    "createTitle": "Новая медитация",
+    "editDescription": "Измените заголовок, текст или видимость.",
+    "createDescription": "Создайте медитацию для личного использования или публикации.",
+    "titleLabel": "Заголовок",
+    "titlePlaceholder": "Утренняя практика",
+    "contentLabel": "Текст медитации",
+    "contentPlaceholder": "Опишите практику, шаги, намерение…",
+    "publicLabel": "Публичная медитация",
+    "publicHint": "Будет видна всем на вкладке «Публичные»"
+  },
+  "meditationCard": {
+    "removeFavorite": "Убрать из избранного",
+    "addFavorite": "В избранное",
+    "edit": "Редактировать",
+    "makePrivate": "Сделать приватной",
+    "makePublic": "Сделать публичной",
+    "delete": "Удалить",
+    "deleteTitle": "Удалить медитацию?",
+    "deleteDescription": "«{title}» будет удалена без возможности восстановления.",
+    "liked": "Вам нравится",
+    "likePrompt": "Нравится?"
+  },
+  "like": {
+    "remove": "Убрать лайк",
+    "add": "Поставить лайк",
+    "failed": "Не удалось поставить лайк",
+    "tryLater": "Попробуйте позже",
+    "loginRequired": "Войдите, чтобы ставить лайки",
+    "notFound": "Медитация не найдена или недоступна"
+  },
+  "settings": {
+    "subtitle": "Настройки",
+    "language": "Язык",
+    "languageDescription": "Выберите язык интерфейса. Настройка сохраняется в браузере.",
+    "comingSoonTitle": "Скоро…",
+    "comingSoonDescription": "Настройки профиля, уведомлений и приватности появятся в следующих версиях."
+  },
+  "history": {
+    "subtitle": "История",
+    "comingSoonTitle": "Скоро…",
+    "comingSoonDescription": "Здесь будет история прослушиваний и недавно открытых медитаций."
+  },
+  "errors": {
+    "invalidData": "Неверные данные",
+    "invalidId": "Неверный идентификатор",
+    "notFoundOrForbidden": "Медитация не найдена или нет доступа"
+  },
+  "validation": {
+    "titleRequired": "Укажите заголовок",
+    "titleMax": "Максимум 200 символов",
+    "contentRequired": "Укажите текст медитации",
+    "contentMax": "Максимум 10000 символов"
+  }
+}

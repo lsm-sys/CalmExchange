@@ -1,16 +1,9 @@
 import { z } from "zod";
 
+/** Серверная схема без UI-сообщений (ошибки переводятся через getTranslations). */
 export const meditationFormSchema = z.object({
-  title: z
-    .string()
-    .trim()
-    .min(1, "Укажите заголовок")
-    .max(200, "Максимум 200 символов"),
-  content: z
-    .string()
-    .trim()
-    .min(1, "Укажите текст медитации")
-    .max(10000, "Максимум 10000 символов"),
+  title: z.string().trim().min(1).max(200),
+  content: z.string().trim().min(1).max(10000),
   isPublic: z.boolean(),
 });
 
@@ -28,12 +21,20 @@ export const listMeditationsSchema = z.object({
 
 export type ListMeditationsParams = z.infer<typeof listMeditationsSchema>;
 
-/** Параметры списка публичных медитаций (+ сортировка). */
 export const publicListSchema = listMeditationsSchema.extend({
-  sort: z
-    .enum(["popular", "recent"])
-    .catch("recent")
-    .default("recent"),
+  sort: z.enum(["popular", "recent"]).catch("recent").default("recent"),
 });
 
 export type PublicListParams = z.infer<typeof publicListSchema>;
+
+/** Маппинг полей Zod → ключи validation.* */
+export function validationMessageKey(
+  field: string,
+  code: string,
+): "titleRequired" | "titleMax" | "contentRequired" | "contentMax" | null {
+  if (field === "title" && code === "too_small") return "titleRequired";
+  if (field === "title" && code === "too_big") return "titleMax";
+  if (field === "content" && code === "too_small") return "contentRequired";
+  if (field === "content" && code === "too_big") return "contentMax";
+  return null;
+}

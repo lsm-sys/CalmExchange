@@ -1,23 +1,12 @@
 import { signIn } from "@/auth";
+import { getAuthErrorMessage } from "@/lib/auth/errors";
 import { redirectIfAuthenticated } from "@/lib/auth/session";
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import "./auth.css";
 
 type LoginPageProps = {
   searchParams: Promise<{ callbackUrl?: string; error?: string }>;
-};
-
-const AUTH_ERRORS: Record<string, string> = {
-  Configuration:
-    "Ошибка конфигурации Auth.js. Проверьте /api/auth/check-config и переменные Vercel.",
-  AccessDenied:
-    "Доступ запрещён Google. Добавьте email в Test users (Google Cloud Console).",
-  Verification: "Ошибка верификации. Попробуйте снова.",
-  OAuthSignin: "Не удалось начать OAuth. Проверьте GOOGLE_CLIENT_ID и GOOGLE_CLIENT_SECRET.",
-  OAuthCallback:
-    "Ошибка callback. Redirect URI: https://calm-exchange.vercel.app/api/auth/callback/google",
-  OAuthCreateAccount: "Не удалось создать пользователя. Проверьте DATABASE_URL и миграции.",
-  Default: "Не удалось войти. Попробуйте снова.",
 };
 
 function resolveRedirectTo(callbackUrl?: string): string {
@@ -39,19 +28,18 @@ function resolveRedirectTo(callbackUrl?: string): string {
 
 export default async function LoginPage({ searchParams }: LoginPageProps) {
   await redirectIfAuthenticated();
+  const t = await getTranslations("auth");
 
   const { callbackUrl, error } = await searchParams;
   const redirectTo = resolveRedirectTo(callbackUrl);
-  const errorMessage = error ? (AUTH_ERRORS[error] ?? AUTH_ERRORS.Default) : null;
+  const errorMessage = await getAuthErrorMessage(error);
 
   return (
     <main className="auth-page">
       <div className="auth-card">
         <p className="auth-kicker">CalmExchange</p>
-        <h1>Вход</h1>
-        <p className="auth-subtitle">
-          Войдите через Google, чтобы управлять своими медитациями.
-        </p>
+        <h1>{t("title")}</h1>
+        <p className="auth-subtitle">{t("subtitle")}</p>
 
         {errorMessage ? <p className="auth-error">{errorMessage}</p> : null}
 
@@ -62,12 +50,12 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           }}
         >
           <button type="submit" className="auth-btn auth-btn-google">
-            Войти через Google
+            {t("signInGoogle")}
           </button>
         </form>
 
         <Link href="/" className="auth-link">
-          На главную
+          {t("backHome")}
         </Link>
       </div>
     </main>

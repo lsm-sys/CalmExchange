@@ -15,9 +15,12 @@ export function meditationPreview(content: string, maxLength = 120): string {
 }
 
 /** Короткое имя для сайдбара: «Антон Л.» */
-export function formatShortName(name: string | null | undefined): string {
+export function formatShortName(
+  name: string | null | undefined,
+  fallback = "User",
+): string {
   if (!name?.trim()) {
-    return "Пользователь";
+    return fallback;
   }
 
   const parts = name.trim().split(/\s+/);

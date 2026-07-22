@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useTranslations } from "next-intl";
 import {
   Globe,
   Lock,
@@ -46,6 +47,8 @@ export function MeditationCard({
   onMutate,
   showOwnerActions = true,
 }: MeditationCardProps) {
+  const t = useTranslations("meditationCard");
+  const tc = useTranslations("common");
   const isOwner = meditation.userId === currentUserId;
   const canManage = isOwner && showOwnerActions;
   const canLike =
@@ -120,7 +123,7 @@ export function MeditationCard({
                 onClick={handleToggleFavorite}
                 disabled={isPending}
                 aria-label={
-                  isFavorite ? "Убрать из избранного" : "В избранное"
+                  isFavorite ? t("removeFavorite") : t("addFavorite")
                 }
               >
                 <Star
@@ -142,7 +145,7 @@ export function MeditationCard({
                   size="icon"
                   className="h-8 w-8"
                   onClick={() => onEdit(meditation)}
-                  aria-label="Редактировать"
+                  aria-label={t("edit")}
                 >
                   <Pencil className="h-4 w-4 text-muted-foreground" />
                 </Button>
@@ -154,7 +157,7 @@ export function MeditationCard({
                   className="h-8 w-8"
                   onClick={handleTogglePublic}
                   disabled={isPending}
-                  aria-label={isPublic ? "Сделать приватной" : "Сделать публичной"}
+                  aria-label={isPublic ? t("makePrivate") : t("makePublic")}
                 >
                   {isPublic ? (
                     <Globe className="h-4 w-4 text-primary" />
@@ -170,26 +173,25 @@ export function MeditationCard({
                       variant="ghost"
                       size="icon"
                       className="h-8 w-8 text-muted-foreground hover:text-destructive"
-                      aria-label="Удалить"
+                      aria-label={t("delete")}
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
-                      <AlertDialogTitle>Удалить медитацию?</AlertDialogTitle>
+                      <AlertDialogTitle>{t("deleteTitle")}</AlertDialogTitle>
                       <AlertDialogDescription>
-                        «{meditation.title}» будет удалена без возможности
-                        восстановления.
+                        {t("deleteDescription", { title: meditation.title })}
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel>Отмена</AlertDialogCancel>
+                      <AlertDialogCancel>{tc("cancel")}</AlertDialogCancel>
                       <AlertDialogAction
                         onClick={handleDelete}
                         className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                       >
-                        Удалить
+                        {t("delete")}
                       </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
@@ -211,7 +213,7 @@ export function MeditationCard({
               initialCount={meditation.likesCount ?? 0}
             />
             <span className="ml-2 text-xs text-muted-foreground">
-              {meditation.likedByMe ? "Вам нравится" : "Нравится?"}
+              {meditation.likedByMe ? t("liked") : t("likePrompt")}
             </span>
           </div>
         ) : null}

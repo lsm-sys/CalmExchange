@@ -1,12 +1,19 @@
+import createIntlMiddleware from "next-intl/middleware";
 import NextAuth from "next-auth";
 import { authConfig } from "./auth.config";
+import { routing } from "./i18n/routing";
+
+const intlMiddleware = createIntlMiddleware(routing);
 
 /**
- * Middleware: защита /dashboard и /my-meditations.
- * authorized() в auth.config.ts возвращает false → редирект на /login.
+ * Цепочка: Auth.js (защита dashboard) → next-intl (локаль из cookie).
  */
-export default NextAuth(authConfig).auth;
+export default NextAuth(authConfig).auth((request) => {
+  return intlMiddleware(request);
+});
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/my-meditations/:path*"],
+  matcher: [
+    "/((?!api|_next|_vercel|.*\\..*).*)",
+  ],
 };

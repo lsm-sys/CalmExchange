@@ -3,6 +3,7 @@
 import { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
 import { Loader2 } from "lucide-react";
 import {
   Dialog,
@@ -22,9 +23,9 @@ import {
   updateMeditation,
 } from "@/lib/meditations/actions";
 import {
-  meditationFormSchema,
+  useMeditationFormSchema,
   type MeditationFormValues,
-} from "@/lib/meditations/schemas";
+} from "@/lib/meditations/use-meditation-form-schema";
 import type { MeditationItem } from "@/lib/meditations/types";
 
 type MeditationDialogProps = {
@@ -43,9 +44,12 @@ export function MeditationDialog({
   const isEdit = Boolean(meditation);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const t = useTranslations("meditationForm");
+  const tc = useTranslations("common");
+  const schema = useMeditationFormSchema();
 
   const form = useForm<MeditationFormValues>({
-    resolver: zodResolver(meditationFormSchema),
+    resolver: zodResolver(schema),
     defaultValues: {
       title: "",
       content: "",
@@ -86,21 +90,19 @@ export function MeditationDialog({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>
-            {isEdit ? "Редактировать медитацию" : "Новая медитация"}
+            {isEdit ? t("editTitle") : t("createTitle")}
           </DialogTitle>
           <DialogDescription>
-            {isEdit
-              ? "Измените заголовок, текст или видимость."
-              : "Создайте медитацию для личного использования или публикации."}
+            {isEdit ? t("editDescription") : t("createDescription")}
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="title">Заголовок</Label>
+            <Label htmlFor="title">{t("titleLabel")}</Label>
             <Input
               id="title"
-              placeholder="Утренняя практика"
+              placeholder={t("titlePlaceholder")}
               {...form.register("title")}
             />
             {form.formState.errors.title ? (
@@ -111,10 +113,10 @@ export function MeditationDialog({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="content">Текст медитации</Label>
+            <Label htmlFor="content">{t("contentLabel")}</Label>
             <Textarea
               id="content"
-              placeholder="Опишите практику, шаги, намерение…"
+              placeholder={t("contentPlaceholder")}
               rows={6}
               {...form.register("content")}
             />
@@ -128,11 +130,9 @@ export function MeditationDialog({
           <div className="flex items-center justify-between rounded-lg border bg-muted/30 px-3 py-3">
             <div>
               <Label htmlFor="isPublic" className="cursor-pointer">
-                Публичная медитация
+                {t("publicLabel")}
               </Label>
-              <p className="text-xs text-muted-foreground">
-                Будет видна всем на вкладке «Публичные»
-              </p>
+              <p className="text-xs text-muted-foreground">{t("publicHint")}</p>
             </div>
             <Switch
               id="isPublic"
@@ -152,18 +152,18 @@ export function MeditationDialog({
               onClick={() => onOpenChange(false)}
               disabled={isPending}
             >
-              Отмена
+              {tc("cancel")}
             </Button>
             <Button type="submit" disabled={isPending}>
               {isPending ? (
                 <>
                   <Loader2 className="animate-spin" />
-                  Сохранение…
+                  {tc("saving")}
                 </>
               ) : isEdit ? (
-                "Сохранить"
+                tc("save")
               ) : (
-                "Создать"
+                tc("create")
               )}
             </Button>
           </DialogFooter>
