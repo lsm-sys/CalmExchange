@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   Bookmark,
+  Globe,
   History,
   LayoutGrid,
   LogOut,
@@ -22,7 +23,8 @@ type DashboardSidebarProps = {
 };
 
 const NAV_ITEMS = [
-  { href: "/dashboard", label: "Медитации", icon: LayoutGrid, exact: true },
+  { href: "/dashboard", label: "Мои медитации", icon: LayoutGrid, exact: true },
+  { href: "/dashboard/public", label: "Публичные", icon: Globe },
   { href: "/dashboard/favorites", label: "Избранное", icon: Bookmark },
   { href: "/dashboard/history", label: "История", icon: History },
   { href: "/dashboard/settings", label: "Настройки", icon: Settings },
@@ -104,18 +106,6 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
           );
         })}
 
-        <Link
-          href="/dashboard/public"
-          className={cn(
-            "mt-2 flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
-            pathname === "/dashboard/public"
-              ? "bg-[var(--sidebar-accent)] text-[var(--sidebar-foreground)] shadow-sm"
-              : "text-[var(--sidebar-foreground)]/80 hover:bg-white/40 hover:text-[var(--sidebar-foreground)]",
-          )}
-        >
-          <LayoutGrid className="h-4 w-4 shrink-0 opacity-70" />
-          Публичные
-        </Link>
       </nav>
 
       <form action={signOutAction} className="mt-6">

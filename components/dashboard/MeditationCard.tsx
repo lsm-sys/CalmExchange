@@ -37,7 +37,6 @@ type MeditationCardProps = {
   onEdit: (meditation: MeditationItem) => void;
   onMutate?: () => void;
   showOwnerActions?: boolean;
-  showLikeButton?: boolean;
 };
 
 export function MeditationCard({
@@ -46,10 +45,11 @@ export function MeditationCard({
   onEdit,
   onMutate,
   showOwnerActions = true,
-  showLikeButton = false,
 }: MeditationCardProps) {
   const isOwner = meditation.userId === currentUserId;
   const canManage = isOwner && showOwnerActions;
+  const canLike =
+    meditation.isPublic && meditation.likesCount !== undefined;
   const [isFavorite, setIsFavorite] = useState(meditation.isFavorite);
   const [isPublic, setIsPublic] = useState(meditation.isPublic);
   const [isPending, startTransition] = useTransition();
@@ -111,14 +111,6 @@ export function MeditationCard({
           </div>
 
           <div className="flex shrink-0 items-center gap-0.5">
-            {showLikeButton && meditation.likesCount !== undefined ? (
-              <LikeButton
-                meditationId={meditation.id}
-                initialLiked={meditation.likedByMe ?? false}
-                initialCount={meditation.likesCount}
-              />
-            ) : null}
-
             {canManage ? (
               <Button
                 type="button"
@@ -210,6 +202,19 @@ export function MeditationCard({
         <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
           {meditationPreview(meditation.content)}
         </p>
+
+        {canLike ? (
+          <div className="mt-3 flex items-center border-t border-border/60 pt-3">
+            <LikeButton
+              meditationId={meditation.id}
+              initialLiked={meditation.likedByMe ?? false}
+              initialCount={meditation.likesCount ?? 0}
+            />
+            <span className="ml-2 text-xs text-muted-foreground">
+              {meditation.likedByMe ? "Вам нравится" : "Нравится?"}
+            </span>
+          </div>
+        ) : null}
       </div>
     </Card>
   );

@@ -43,7 +43,8 @@ const MODE_CONFIG: Record<
   public: {
     subtitle: "Публичные медитации",
     emptyTitle: "Публичных медитаций пока нет",
-    emptyHint: "Опубликуйте свою медитацию, чтобы она появилась здесь",
+    emptyHint:
+      "Создайте медитацию в «Мои медитации», включите «Публичная» — она появится здесь, и другие смогут ставить лайки 👍",
     canCreate: false,
     showOwnerActions: true,
   },
@@ -241,7 +242,6 @@ export function MeditationsView({
                 onEdit={openEdit}
                 onMutate={handleRefresh}
                 showOwnerActions={config.showOwnerActions}
-                showLikeButton={mode === "public"}
               />
             </li>
           ))}

@@ -73,14 +73,14 @@ export function LikeButton({
   }
 
   return (
-    <div className="flex flex-col items-end gap-0.5">
+    <div className="flex items-center gap-1">
       <Button
         type="button"
-        variant="ghost"
+        variant={liked ? "secondary" : "outline"}
         size="sm"
         className={cn(
-          "h-8 gap-1.5 px-2",
-          liked && "text-primary hover:text-primary",
+          "h-9 gap-2 px-3",
+          liked && "border-primary/30 bg-primary/10 text-primary hover:bg-primary/15",
         )}
         onClick={handleClick}
         disabled={loading}
@@ -88,14 +88,12 @@ export function LikeButton({
         aria-pressed={liked}
       >
         <ThumbsUp
-          className={cn("h-4 w-4", liked && "fill-primary/20 text-primary")}
+          className={cn("h-4 w-4", liked && "fill-primary text-primary")}
         />
-        <span className="min-w-[1ch] text-sm tabular-nums">{count}</span>
+        <span className="text-sm font-medium tabular-nums">{count}</span>
       </Button>
       {error ? (
-        <span className="max-w-[140px] text-right text-xs text-destructive">
-          {error}
-        </span>
+        <span className="text-xs text-destructive">{error}</span>
       ) : null}
     </div>
   );

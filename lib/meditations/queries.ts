@@ -20,10 +20,16 @@ function buildSearchFilter(search?: string) {
 async function paginateMeditations(
   where: Prisma.MeditationWhereInput,
   params: ListMeditationsParams,
-  includeOwner = false,
+  options?: {
+    includeOwner?: boolean;
+    /** Подгрузить likesCount и likedByMe для карточек */
+    includeLikesForUserId?: string;
+  },
 ): Promise<PaginatedMeditations> {
   const { page, pageSize, search } = params;
   const searchFilter = buildSearchFilter(search);
+  const includeOwner = options?.includeOwner ?? false;
+  const likesUserId = options?.includeLikesForUserId;
 
   const whereClause = searchFilter ? { AND: [where, searchFilter] } : where;
 
@@ -34,9 +40,21 @@ async function paginateMeditations(
       orderBy: { updatedAt: "desc" },
       skip: (page - 1) * pageSize,
       take: pageSize,
-      include: includeOwner
-        ? { owner: { select: { id: true, name: true, email: true } } }
-        : undefined,
+      include: {
+        ...(includeOwner
+          ? { owner: { select: { id: true, name: true, email: true } } }
+          : {}),
+        ...(likesUserId
+          ? {
+              _count: { select: { likes: true } },
+              likes: {
+                where: { userId: likesUserId },
+                select: { id: true },
+                take: 1,
+              },
+            }
+          : {}),
+      },
     }),
   ]);
 
@@ -54,7 +72,9 @@ export async function listMyMeditations(
   userId: string,
   params: ListMeditationsParams,
 ): Promise<PaginatedMeditations> {
-  return paginateMeditations({ ownerId: userId }, params);
+  return paginateMeditations({ ownerId: userId }, params, {
+    includeLikesForUserId: userId,
+  });
 }
 
 /** Все публичные медитации с лайками и сортировкой. */
@@ -107,7 +127,11 @@ export async function listFavoriteMeditations(
   userId: string,
   params: ListMeditationsParams,
 ): Promise<PaginatedMeditations> {
-  return paginateMeditations({ ownerId: userId, isFavorite: true }, params);
+  return paginateMeditations(
+    { ownerId: userId, isFavorite: true },
+    params,
+    { includeLikesForUserId: userId },
+  );
 }
 
 /** Одна медитация владельца — для проверки прав перед update/delete. */
