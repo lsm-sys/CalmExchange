@@ -26,6 +26,7 @@ model User {
   notes         Note[]
   meditations   Meditation[]
   votes         Vote[]
+  likes         Like[]
 }
 
 // OAuth-аккаунт провайдера (Google и др.), привязанный к User.
@@ -95,6 +96,7 @@ model Meditation {
   updatedAt   DateTime   @updatedAt
   publishedAt DateTime?
   votes       Vote[]
+  likes       Like[]
 
   @@index([ownerId, updatedAt])
   @@index([visibility, createdAt])
@@ -113,4 +115,17 @@ model Vote {
   @@unique([userId, meditationId])
   @@index([meditationId])
   @@index([userId])
+}
+
+// Лайк публичной медитации. 1 пользователь = 1 лайк (toggle).
+model Like {
+  id           String     @id @default(cuid())
+  userId       String
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  meditationId String
+  meditation   Meditation @relation(fields: [meditationId], references: [id], onDelete: Cascade)
+  createdAt    DateTime   @default(now())
+
+  @@unique([userId, meditationId])
+  @@index([meditationId])
 }

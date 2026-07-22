@@ -29,6 +29,7 @@ import {
 } from "@/lib/meditations/actions";
 import type { MeditationItem } from "@/lib/meditations/types";
 import { cn, meditationPreview } from "@/lib/utils";
+import { LikeButton } from "@/components/dashboard/LikeButton";
 
 type MeditationCardProps = {
   meditation: MeditationItem;
@@ -36,6 +37,7 @@ type MeditationCardProps = {
   onEdit: (meditation: MeditationItem) => void;
   onMutate?: () => void;
   showOwnerActions?: boolean;
+  showLikeButton?: boolean;
 };
 
 export function MeditationCard({
@@ -44,6 +46,7 @@ export function MeditationCard({
   onEdit,
   onMutate,
   showOwnerActions = true,
+  showLikeButton = false,
 }: MeditationCardProps) {
   const isOwner = meditation.userId === currentUserId;
   const canManage = isOwner && showOwnerActions;
@@ -108,6 +111,14 @@ export function MeditationCard({
           </div>
 
           <div className="flex shrink-0 items-center gap-0.5">
+            {showLikeButton && meditation.likesCount !== undefined ? (
+              <LikeButton
+                meditationId={meditation.id}
+                initialLiked={meditation.likedByMe ?? false}
+                initialCount={meditation.likesCount}
+              />
+            ) : null}
+
             {canManage ? (
               <Button
                 type="button"

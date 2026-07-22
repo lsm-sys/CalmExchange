@@ -20,6 +20,7 @@ type MeditationsViewProps = {
   currentUserId: string;
   initialData: PaginatedMeditations;
   initialSearch: string;
+  initialSort?: "popular" | "recent";
 };
 
 const MODE_CONFIG: Record<
@@ -60,6 +61,7 @@ export function MeditationsView({
   currentUserId,
   initialData,
   initialSearch,
+  initialSort = "recent",
 }: MeditationsViewProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -69,9 +71,20 @@ export function MeditationsView({
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<MeditationItem | null>(null);
   const [search, setSearch] = useState(initialSearch);
+  const [sort, setSort] = useState<"popular" | "recent">(initialSort);
   const [isNavigating, startTransition] = useTransition();
 
   const { items, page, totalPages, total } = initialData;
+
+  // Синхронизация sort из URL (назад/вперёд в браузере)
+  useEffect(() => {
+    if (mode !== "public") {
+      return;
+    }
+    const urlSort =
+      searchParams.get("sort") === "popular" ? "popular" : "recent";
+    setSort(urlSort);
+  }, [searchParams, mode]);
 
   // Debounced search → обновление URL
   useEffect(() => {
@@ -98,6 +111,32 @@ export function MeditationsView({
 
     return () => clearTimeout(timer);
   }, [search, pathname, router, searchParams]);
+
+  // Сортировка публичного списка → URL
+  useEffect(() => {
+    if (mode !== "public") {
+      return;
+    }
+
+    const params = new URLSearchParams(searchParams.toString());
+    const currentSort = params.get("sort") === "popular" ? "popular" : "recent";
+
+    if (sort === currentSort) {
+      return;
+    }
+
+    if (sort === "recent") {
+      params.delete("sort");
+    } else {
+      params.set("sort", sort);
+    }
+    params.delete("page");
+
+    startTransition(() => {
+      const qs = params.toString();
+      router.push(qs ? `${pathname}?${qs}` : pathname);
+    });
+  }, [sort, mode, pathname, router, searchParams]);
 
   const handleRefresh = useCallback(() => {
     router.refresh();
@@ -141,16 +180,41 @@ export function MeditationsView({
         }
       />
 
-      <div className="relative mb-6 max-w-md">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <Input
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Поиск по заголовку или тексту…"
-          className="pl-9"
-        />
-        {isNavigating ? (
-          <Loader2 className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-muted-foreground" />
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="relative max-w-md flex-1">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Поиск по заголовку или тексту…"
+            className="pl-9"
+          />
+          {isNavigating ? (
+            <Loader2 className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-muted-foreground" />
+          ) : null}
+        </div>
+
+        {mode === "public" ? (
+          <div className="flex shrink-0 gap-2">
+            <Button
+              type="button"
+              variant={sort === "recent" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setSort("recent")}
+              disabled={isNavigating}
+            >
+              По дате
+            </Button>
+            <Button
+              type="button"
+              variant={sort === "popular" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setSort("popular")}
+              disabled={isNavigating}
+            >
+              По популярности
+            </Button>
+          </div>
         ) : null}
       </div>
 
@@ -177,6 +241,7 @@ export function MeditationsView({
                 onEdit={openEdit}
                 onMutate={handleRefresh}
                 showOwnerActions={config.showOwnerActions}
+                showLikeButton={mode === "public"}
               />
             </li>
           ))}

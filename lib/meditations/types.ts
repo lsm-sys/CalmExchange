@@ -12,6 +12,10 @@ export type MeditationItem = {
   createdAt: Date;
   updatedAt: Date;
   owner?: Pick<User, "id" | "name" | "email">;
+  /** Количество лайков (только для публичного списка). */
+  likesCount?: number;
+  /** Лайкнул ли текущий пользователь (только для публичного списка). */
+  likedByMe?: boolean;
 };
 
 export type PaginatedMeditations = {
@@ -22,9 +26,13 @@ export type PaginatedMeditations = {
   totalPages: number;
 };
 
-export function toMeditationItem(
-  meditation: Meditation & { owner?: Pick<User, "id" | "name" | "email"> },
-): MeditationItem {
+type MeditationRow = Meditation & {
+  owner?: Pick<User, "id" | "name" | "email">;
+  _count?: { likes: number };
+  likes?: { id: string }[];
+};
+
+export function toMeditationItem(meditation: MeditationRow): MeditationItem {
   return {
     id: meditation.id,
     userId: meditation.ownerId,
@@ -35,6 +43,12 @@ export function toMeditationItem(
     createdAt: meditation.createdAt,
     updatedAt: meditation.updatedAt,
     owner: meditation.owner,
+    ...(meditation._count !== undefined
+      ? {
+          likesCount: meditation._count.likes,
+          likedByMe: (meditation.likes?.length ?? 0) > 0,
+        }
+      : {}),
   };
 }
 

@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { Visibility, type Prisma } from "@prisma/client";
-import type { ListMeditationsParams } from "./schemas";
+import type { ListMeditationsParams, PublicListParams } from "./schemas";
 import { toMeditationItem, type PaginatedMeditations } from "./types";
 
 function buildSearchFilter(search?: string) {
@@ -57,11 +57,49 @@ export async function listMyMeditations(
   return paginateMeditations({ ownerId: userId }, params);
 }
 
-/** Все публичные медитации. */
+/** Все публичные медитации с лайками и сортировкой. */
 export async function listPublicMeditations(
-  params: ListMeditationsParams,
+  userId: string,
+  params: PublicListParams,
 ): Promise<PaginatedMeditations> {
-  return paginateMeditations({ visibility: Visibility.PUBLIC }, params, true);
+  const { page, pageSize, search, sort } = params;
+  const searchFilter = buildSearchFilter(search);
+
+  const whereClause: Prisma.MeditationWhereInput = searchFilter
+    ? { AND: [{ visibility: Visibility.PUBLIC }, searchFilter] }
+    : { visibility: Visibility.PUBLIC };
+
+  const orderBy: Prisma.MeditationOrderByWithRelationInput =
+    sort === "popular"
+      ? { likes: { _count: "desc" } }
+      : { createdAt: "desc" };
+
+  const [total, rows] = await Promise.all([
+    prisma.meditation.count({ where: whereClause }),
+    prisma.meditation.findMany({
+      where: whereClause,
+      orderBy,
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+      include: {
+        owner: { select: { id: true, name: true, email: true } },
+        _count: { select: { likes: true } },
+        likes: {
+          where: { userId },
+          select: { id: true },
+          take: 1,
+        },
+      },
+    }),
+  ]);
+
+  return {
+    items: rows.map(toMeditationItem),
+    total,
+    page,
+    pageSize,
+    totalPages: Math.max(1, Math.ceil(total / pageSize)),
+  };
 }
 
 /** Избранные медитации текущего пользователя. */

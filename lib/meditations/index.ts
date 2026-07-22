@@ -22,6 +22,8 @@ export type { MeditationItem, PaginatedMeditations } from "./types";
 export {
   meditationFormSchema,
   listMeditationsSchema,
+  publicListSchema,
   type MeditationFormValues,
   type ListMeditationsParams,
+  type PublicListParams,
 } from "./schemas";

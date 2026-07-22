@@ -27,3 +27,13 @@ export const listMeditationsSchema = z.object({
 });
 
 export type ListMeditationsParams = z.infer<typeof listMeditationsSchema>;
+
+/** Параметры списка публичных медитаций (+ сортировка). */
+export const publicListSchema = listMeditationsSchema.extend({
+  sort: z
+    .enum(["popular", "recent"])
+    .catch("recent")
+    .default("recent"),
+});
+
+export type PublicListParams = z.infer<typeof publicListSchema>;
