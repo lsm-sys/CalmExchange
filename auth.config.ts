@@ -15,6 +15,8 @@ export const authConfig = {
   ],
   pages: {
     signIn: "/login",
+    // Вместо generic «Server error» — редирект на /login?error=...
+    error: "/login",
   },
   callbacks: {
     authorized({ auth, request }) {
