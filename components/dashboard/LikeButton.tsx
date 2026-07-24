@@ -10,12 +10,15 @@ type LikeButtonProps = {
   meditationId: string;
   initialLiked: boolean;
   initialCount: number;
+  /** Куда перенаправить при 401 (гость ставит лайк) */
+  loginRedirectUrl?: string;
 };
 
 export function LikeButton({
   meditationId,
   initialLiked,
   initialCount,
+  loginRedirectUrl = "/login?callbackUrl=/",
 }: LikeButtonProps) {
   const t = useTranslations("like");
   const [liked, setLiked] = useState(initialLiked);
@@ -45,7 +48,7 @@ export function LikeButton({
       if (response.status === 401) {
         setLiked(prevLiked);
         setCount(prevCount);
-        window.location.href = "/login?callbackUrl=/dashboard/public";
+        window.location.href = loginRedirectUrl;
         return;
       }
 

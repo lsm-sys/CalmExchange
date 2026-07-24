@@ -18,7 +18,12 @@ export {
   getMeditationIfAllowed,
 } from "./queries";
 
-export type { MeditationItem, PaginatedMeditations } from "./types";
+export {
+  getHomePublicMeditations,
+  getPublicMeditationDetail,
+  getCatalogPublicMeditations,
+} from "./home-queries";
+export type { HomeMeditationsData, PublicMeditationDetail, CatalogPageData } from "./home-queries";
 export {
   meditationFormSchema,
   listMeditationsSchema,

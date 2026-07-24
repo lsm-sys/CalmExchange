@@ -1,7 +1,7 @@
 {
   "metadata": {
     "title": "CalmExchange",
-    "description": "Next.js + Prisma + Neon PostgreSQL"
+    "description": "Meditation exchange — public catalog and personal dashboard"
   },
   "common": {
     "loading": "Loading…",
@@ -14,11 +14,55 @@
   },
   "home": {
     "subtitle": "Meditation exchange",
+    "heroTitle": "Meditations worth sharing",
+    "heroSubtitle": "Discover practices from the community, like what resonates, and share your own in a calm, respectful space.",
+    "addMeditation": "Add meditation",
+    "signInHint": "Sign in to add meditations",
+    "recentTitle": "New",
+    "recentSubtitle": "Latest published meditations",
+    "popularTitle": "Popular",
+    "popularSubtitle": "By number of likes",
+    "recentEmptyTitle": "No public meditations yet",
+    "recentEmptyHint": "Be the first — sign in and publish a meditation",
+    "popularEmptyTitle": "No popular meditations yet",
+    "popularEmptyHint": "Like a practice you enjoy",
+    "viewAll": "View all",
+    "open": "Open",
+    "autoTranslated": "Auto-translated",
     "cabinet": "Dashboard",
+    "signIn": "Sign in"
+  },
+  "layout": {
+    "navHome": "Home",
+    "navCatalog": "Catalog",
+    "navMine": "My meditations",
     "signIn": "Sign in",
-    "dbCheck": "PostgreSQL (Neon) connection check",
-    "dbError": "Could not connect to the database. Check the DATABASE_URL variable.",
-    "dbEmpty": "Database connected. No notes yet."
+    "signOut": "Sign out",
+    "copyright": "© CalmExchange {year}",
+    "privacy": "Privacy",
+    "contacts": "Contact"
+  },
+  "catalog": {
+    "title": "Catalog",
+    "subtitle": "All public meditations from the community",
+    "sortRecent": "New",
+    "sortPopular": "Popular",
+    "emptyTitle": "Catalog is empty",
+    "emptyHint": "Public meditations will appear when members start sharing",
+    "pagination": "Page {page} of {totalPages} · {total} total",
+    "back": "Back",
+    "forward": "Next"
+  },
+  "meditationPage": {
+    "backToCatalog": "Back to catalog",
+    "autoTranslated": "Auto-translated",
+    "readOnlyHint": "View only — editing is available in your dashboard"
+  },
+  "legal": {
+    "privacyTitle": "Privacy policy",
+    "privacyBody": "The full privacy policy will be published soon. For data processing questions, use the contact page.",
+    "contactsTitle": "Contact",
+    "contactsBody": "For CalmExchange inquiries: support@calmexchange.app (placeholder — set a real address before production)."
   },
   "auth": {
     "title": "Sign in",

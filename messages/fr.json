@@ -1,7 +1,7 @@
 {
   "metadata": {
     "title": "CalmExchange",
-    "description": "Next.js + Prisma + Neon PostgreSQL"
+    "description": "Échange de méditations — catalogue public et espace personnel"
   },
   "common": {
     "loading": "Chargement…",
@@ -14,11 +14,55 @@
   },
   "home": {
     "subtitle": "Échange de méditations",
+    "heroTitle": "Des méditations à partager",
+    "heroSubtitle": "Découvrez les pratiques de la communauté, aimez celles qui vous parlent et partagez les vôtres dans un espace calme et respectueux.",
+    "addMeditation": "Ajouter une méditation",
+    "signInHint": "Connectez-vous pour ajouter",
+    "recentTitle": "Nouvelles",
+    "recentSubtitle": "Dernières méditations publiées",
+    "popularTitle": "Populaires",
+    "popularSubtitle": "Par nombre de likes",
+    "recentEmptyTitle": "Aucune méditation publique",
+    "recentEmptyHint": "Soyez le premier — connectez-vous et publiez",
+    "popularEmptyTitle": "Pas encore de méditations populaires",
+    "popularEmptyHint": "Aimez une pratique qui vous plaît",
+    "viewAll": "Tout voir",
+    "open": "Ouvrir",
+    "autoTranslated": "Traduction auto",
     "cabinet": "Espace personnel",
+    "signIn": "Se connecter"
+  },
+  "layout": {
+    "navHome": "Accueil",
+    "navCatalog": "Catalogue",
+    "navMine": "Mes méditations",
     "signIn": "Se connecter",
-    "dbCheck": "Vérification de la connexion PostgreSQL (Neon)",
-    "dbError": "Impossible de se connecter à la base de données. Vérifiez la variable DATABASE_URL.",
-    "dbEmpty": "Base connectée. Aucune note pour le moment."
+    "signOut": "Se déconnecter",
+    "copyright": "© CalmExchange {year}",
+    "privacy": "Politique",
+    "contacts": "Contact"
+  },
+  "catalog": {
+    "title": "Catalogue",
+    "subtitle": "Toutes les méditations publiques de la communauté",
+    "sortRecent": "Nouvelles",
+    "sortPopular": "Populaires",
+    "emptyTitle": "Catalogue vide",
+    "emptyHint": "Les méditations publiques apparaîtront quand les membres commenceront à partager",
+    "pagination": "Page {page} sur {totalPages} · {total} au total",
+    "back": "Précédent",
+    "forward": "Suivant"
+  },
+  "meditationPage": {
+    "backToCatalog": "Retour au catalogue",
+    "autoTranslated": "Traduction auto",
+    "readOnlyHint": "Lecture seule — l'édition est disponible dans votre espace personnel"
+  },
+  "legal": {
+    "privacyTitle": "Politique de confidentialité",
+    "privacyBody": "Le texte complet sera publié prochainement. Pour les questions sur vos données, consultez la page contact.",
+    "contactsTitle": "Contact",
+    "contactsBody": "Pour CalmExchange : support@calmexchange.app (placeholder — indiquez une adresse réelle avant la production)."
   },
   "auth": {
     "title": "Connexion",

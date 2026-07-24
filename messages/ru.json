@@ -1,7 +1,7 @@
 {
   "metadata": {
     "title": "CalmExchange",
-    "description": "Next.js + Prisma + Neon PostgreSQL"
+    "description": "Обмен медитациями — публичный каталог и личный кабинет"
   },
   "common": {
     "loading": "Загрузка…",
@@ -14,11 +14,55 @@
   },
   "home": {
     "subtitle": "Обмен медитациями",
+    "heroTitle": "Медитации, которыми делятся",
+    "heroSubtitle": "Открывайте практики других участников, ставьте лайки и делитесь своими — в спокойном и уважительном пространстве.",
+    "addMeditation": "Добавить медитацию",
+    "signInHint": "Войдите, чтобы добавлять",
+    "recentTitle": "Новые",
+    "recentSubtitle": "Последние опубликованные медитации",
+    "popularTitle": "Популярные",
+    "popularSubtitle": "По количеству лайков",
+    "recentEmptyTitle": "Публичных медитаций пока нет",
+    "recentEmptyHint": "Станьте первым — войдите и опубликуйте медитацию",
+    "popularEmptyTitle": "Пока нет популярных медитаций",
+    "popularEmptyHint": "Поставьте лайк понравившейся практике",
+    "viewAll": "Смотреть все",
+    "open": "Открыть",
+    "autoTranslated": "Автоперевод",
     "cabinet": "Кабинет",
+    "signIn": "Войти"
+  },
+  "layout": {
+    "navHome": "Главная",
+    "navCatalog": "Каталог",
+    "navMine": "Мои медитации",
     "signIn": "Войти",
-    "dbCheck": "Проверка подключения к PostgreSQL (Neon)",
-    "dbError": "Не удалось подключиться к базе данных. Проверьте переменную DATABASE_URL.",
-    "dbEmpty": "База подключена. Заметок пока нет."
+    "signOut": "Выйти",
+    "copyright": "© CalmExchange {year}",
+    "privacy": "Политика",
+    "contacts": "Контакты"
+  },
+  "catalog": {
+    "title": "Каталог",
+    "subtitle": "Все публичные медитации сообщества",
+    "sortRecent": "Новые",
+    "sortPopular": "Популярные",
+    "emptyTitle": "Каталог пуст",
+    "emptyHint": "Публичные медитации появятся, когда участники начнут делиться",
+    "pagination": "Страница {page} из {totalPages} · всего {total}",
+    "back": "Назад",
+    "forward": "Вперёд"
+  },
+  "meditationPage": {
+    "backToCatalog": "К каталогу",
+    "autoTranslated": "Автоперевод",
+    "readOnlyHint": "Только просмотр — редактирование доступно в личном кабинете"
+  },
+  "legal": {
+    "privacyTitle": "Политика конфиденциальности",
+    "privacyBody": "Полный текст политики конфиденциальности будет опубликован в ближайшее время. По вопросам обработки данных напишите на контакты ниже.",
+    "contactsTitle": "Контакты",
+    "contactsBody": "По вопросам CalmExchange: support@calmexchange.app (заглушка — укажите реальный адрес перед production)."
   },
   "auth": {
     "title": "Вход",

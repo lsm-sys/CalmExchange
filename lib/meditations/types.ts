@@ -22,6 +22,8 @@ export type MeditationItem = {
   likedByMe?: boolean;
   /** Контент автоматически переведён при показе */
   autoTranslated?: boolean;
+  /** Название категории (тег) */
+  categoryName?: string | null;
 };
 
 export type PaginatedMeditations = {
@@ -34,6 +36,7 @@ export type PaginatedMeditations = {
 
 type MeditationRow = Meditation & {
   owner?: Pick<User, "id" | "name" | "email">;
+  category?: { category: string } | null;
   _count?: { likes: number };
   likes?: { id: string }[];
   translations?: { locale: string; title: string; content: string }[];
@@ -66,6 +69,7 @@ export async function toMeditationItem(
     updatedAt: meditation.updatedAt,
     owner: meditation.owner,
     autoTranslated: localized.wasAutoTranslated,
+    categoryName: meditation.category?.category ?? null,
     ...(meditation._count !== undefined
       ? {
           likesCount: meditation._count.likes,
