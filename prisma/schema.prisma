@@ -21,6 +21,9 @@ model User {
   name          String?
   image         String?
   createdAt     DateTime     @default(now())
+  /** Согласие на автоперевод через сторонний API (MyMemory). */
+  autoTranslateConsent   Boolean   @default(false)
+  autoTranslateConsentAt DateTime?
   accounts      Account[]
   sessions      Session[]
   notes         Note[]

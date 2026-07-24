@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { getAuthBaseUrl, getAuthSecret } from "@/lib/auth/env";
+import { isProduction } from "@/lib/security/is-production";
 
 function validateAuthEnv() {
   const authSecret = getAuthSecret()?.trim() ?? "";
@@ -62,6 +63,10 @@ function validateAuthEnv() {
 }
 
 export async function GET() {
+  if (isProduction()) {
+    return Response.json({ error: "Not found" }, { status: 404 });
+  }
+
   const envCheck = validateAuthEnv();
   let databaseOk = false;
   let databaseError: string | null = null;

@@ -1,8 +1,11 @@
 import { prisma } from "@/lib/prisma";
 import { Visibility, type Prisma } from "@prisma/client";
 import type { Locale } from "@/i18n/routing";
+import { canAutoTranslate } from "@/lib/gdpr/consent";
 import type { ListMeditationsParams, PublicListParams } from "./schemas";
 import { toMeditationItem, type PaginatedMeditations } from "./types";
+
+const ownerPublicSelect = { id: true, name: true } as const;
 
 const translationInclude = {
   translations: {
@@ -42,12 +45,14 @@ async function paginateMeditations(
   options?: {
     includeOwner?: boolean;
     includeLikesForUserId?: string;
+    allowAutoTranslate?: boolean;
   },
 ): Promise<PaginatedMeditations> {
   const { page, pageSize, search } = params;
   const searchFilter = buildSearchFilter(search, locale);
   const includeOwner = options?.includeOwner ?? false;
   const likesUserId = options?.includeLikesForUserId;
+  const allowAutoTranslate = options?.allowAutoTranslate ?? false;
 
   const whereClause = searchFilter ? { AND: [where, searchFilter] } : where;
 
@@ -61,7 +66,7 @@ async function paginateMeditations(
       include: {
         ...translationInclude,
         ...(includeOwner
-          ? { owner: { select: { id: true, name: true, email: true } } }
+          ? { owner: { select: ownerPublicSelect } }
           : {}),
         ...(likesUserId
           ? {
@@ -78,7 +83,7 @@ async function paginateMeditations(
   ]);
 
   const items = await Promise.all(
-    rows.map((row) => toMeditationItem(row, locale)),
+    rows.map((row) => toMeditationItem(row, locale, allowAutoTranslate)),
   );
 
   return {
@@ -95,8 +100,10 @@ export async function listMyMeditations(
   params: ListMeditationsParams,
   locale: Locale,
 ): Promise<PaginatedMeditations> {
+  const allowAutoTranslate = await canAutoTranslate(userId);
   return paginateMeditations({ ownerId: userId }, params, locale, {
     includeLikesForUserId: userId,
+    allowAutoTranslate,
   });
 }
 
@@ -117,6 +124,8 @@ export async function listPublicMeditations(
       ? { likes: { _count: "desc" } }
       : { createdAt: "desc" };
 
+  const allowAutoTranslate = await canAutoTranslate(userId);
+
   const [total, rows] = await Promise.all([
     prisma.meditation.count({ where: whereClause }),
     prisma.meditation.findMany({
@@ -126,7 +135,7 @@ export async function listPublicMeditations(
       take: pageSize,
       include: {
         ...translationInclude,
-        owner: { select: { id: true, name: true, email: true } },
+        owner: { select: ownerPublicSelect },
         _count: { select: { likes: true } },
         likes: {
           where: { userId },
@@ -138,7 +147,7 @@ export async function listPublicMeditations(
   ]);
 
   const items = await Promise.all(
-    rows.map((row) => toMeditationItem(row, locale)),
+    rows.map((row) => toMeditationItem(row, locale, allowAutoTranslate)),
   );
 
   return {
@@ -155,11 +164,12 @@ export async function listFavoriteMeditations(
   params: ListMeditationsParams,
   locale: Locale,
 ): Promise<PaginatedMeditations> {
+  const allowAutoTranslate = await canAutoTranslate(userId);
   return paginateMeditations(
     { ownerId: userId, isFavorite: true },
     params,
     locale,
-    { includeLikesForUserId: userId },
+    { includeLikesForUserId: userId, allowAutoTranslate },
   );
 }
 
@@ -187,7 +197,7 @@ export async function getVisibleMeditations(userId: string | null) {
     },
     orderBy: { updatedAt: "desc" },
     include: {
-      owner: { select: { id: true, name: true, email: true } },
+      owner: { select: ownerPublicSelect },
       ...translationInclude,
     },
   });

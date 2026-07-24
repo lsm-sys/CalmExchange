@@ -1,6 +1,7 @@
 import { signIn } from "@/auth";
 import { getAuthErrorMessage } from "@/lib/auth/errors";
 import { redirectIfAuthenticated } from "@/lib/auth/session";
+import { LoginForm } from "@/components/auth/LoginForm";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import "./auth.css";
@@ -34,6 +35,11 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   const redirectTo = resolveRedirectTo(callbackUrl);
   const errorMessage = await getAuthErrorMessage(error);
 
+  async function signInWithGoogle() {
+    "use server";
+    await signIn("google", { redirectTo });
+  }
+
   return (
     <main className="auth-page">
       <div className="auth-card">
@@ -43,16 +49,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
 
         {errorMessage ? <p className="auth-error">{errorMessage}</p> : null}
 
-        <form
-          action={async () => {
-            "use server";
-            await signIn("google", { redirectTo });
-          }}
-        >
-          <button type="submit" className="auth-btn auth-btn-google">
-            {t("signInGoogle")}
-          </button>
-        </form>
+        <LoginForm signInAction={signInWithGoogle} />
 
         <Link href="/" className="auth-link">
           {t("backHome")}

@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { Visibility } from "@prisma/client";
 import type { Locale } from "@/i18n/routing";
+import { canAutoTranslate } from "@/lib/gdpr/consent";
 import { toMeditationItem, type MeditationItem } from "./types";
 
 const HOME_LIMIT = 12;
@@ -26,6 +27,7 @@ async function attachLikedByMe(
   rows: MeditationRow[],
   userId: string | null,
   locale: Locale,
+  allowAutoTranslate: boolean,
 ): Promise<MeditationItem[]> {
   let likedIds = new Set<string>();
 
@@ -48,6 +50,7 @@ async function attachLikedByMe(
           likes: likedIds.has(row.id) ? [{ id: "liked" }] : [],
         },
         locale,
+        allowAutoTranslate,
       );
       return item;
     }),
@@ -67,6 +70,8 @@ export async function getHomePublicMeditations(
 ): Promise<HomeMeditationsData> {
   const where = { visibility: Visibility.PUBLIC };
 
+  const allowAutoTranslate = await canAutoTranslate(userId);
+
   const [recentRows, popularRows] = await Promise.all([
     prisma.meditation.findMany({
       where,
@@ -83,8 +88,8 @@ export async function getHomePublicMeditations(
   ]);
 
   const [recent, popular] = await Promise.all([
-    attachLikedByMe(recentRows, userId, locale),
-    attachLikedByMe(popularRows, userId, locale),
+    attachLikedByMe(recentRows, userId, locale, allowAutoTranslate),
+    attachLikedByMe(popularRows, userId, locale, allowAutoTranslate),
   ]);
 
   return { recent, popular };
@@ -119,12 +124,15 @@ export async function getPublicMeditationDetail(
     likedByMe = Boolean(like);
   }
 
+  const allowAutoTranslate = await canAutoTranslate(userId);
+
   const item = await toMeditationItem(
     {
       ...row,
       likes: likedByMe ? [{ id: "liked" }] : [],
     },
     locale,
+    allowAutoTranslate,
   );
 
   return {
@@ -172,7 +180,9 @@ export async function getCatalogPublicMeditations(
     }),
   ]);
 
-  const items = await attachLikedByMe(rows, userId, locale);
+  const allowAutoTranslate = await canAutoTranslate(userId);
+
+  const items = await attachLikedByMe(rows, userId, locale, allowAutoTranslate);
 
   return {
     items,

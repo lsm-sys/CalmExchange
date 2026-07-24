@@ -40,6 +40,8 @@
     "signOut": "Sign out",
     "copyright": "© CalmExchange {year}",
     "privacy": "Privacy",
+    "terms": "Terms",
+    "cookies": "Cookies",
     "contacts": "Contact"
   },
   "catalog": {
@@ -59,15 +61,93 @@
     "readOnlyHint": "View only — editing is available in your dashboard"
   },
   "legal": {
-    "privacyTitle": "Privacy policy",
-    "privacyBody": "The full privacy policy will be published soon. For data processing questions, use the contact page.",
-    "contactsTitle": "Contact",
-    "contactsBody": "For CalmExchange inquiries: support@calmexchange.app (placeholder — set a real address before production)."
+    "privacy": {
+      "title": "Privacy policy",
+      "lastUpdated": "Last updated: July 24, 2026",
+      "s1Title": "1. Data controller",
+      "s1Body": "CalmExchange (\"Service\") processes personal data under GDPR (EU 2016/679). Contact: support@calmexchange.app.",
+      "s2Title": "2. Data we collect",
+      "s2Body": "Google sign-in: email, name, profile photo, OAuth ID. Usage: meditation texts, likes, language settings, session cookies.",
+      "s3Title": "3. Purposes and legal basis",
+      "s3Body": "Providing the Service (contract). Google OAuth (consent). Auto-translation via MyMemory — only with your explicit opt-in.",
+      "s4Title": "4. Processors and transfers",
+      "s4Body": "Google (OAuth), Vercel (hosting), Neon (PostgreSQL), MyMemory (translation — opt-in only). Data may be processed outside the EU with appropriate safeguards.",
+      "s5Title": "5. Your rights",
+      "s5Body": "Access, rectification, erasure, restriction, portability, objection. Export and delete account in Settings. You may lodge a complaint with your supervisory authority.",
+      "s6Title": "6. Retention",
+      "s6Body": "Data kept while your account is active. Deleted on account removal. JWT session up to 30 days.",
+      "termsLink": "Terms of use",
+      "cookiesLink": "Cookie policy",
+      "contactsLink": "Contact"
+    },
+    "terms": {
+      "title": "Terms of use",
+      "lastUpdated": "Last updated: July 24, 2026",
+      "s1Title": "1. Service",
+      "s1Body": "CalmExchange lets you create, store, and share meditation texts. By using the Service you accept these terms.",
+      "s2Title": "2. Account",
+      "s2Body": "Sign in with Google. You are responsible for published content and third-party rights.",
+      "s3Title": "3. Public content",
+      "s3Body": "Public meditations are visible to others. Do not publish third parties' personal data without consent.",
+      "s4Title": "4. Termination",
+      "s4Body": "You may delete your account in Settings. We may restrict access for violations.",
+      "privacyLink": "Privacy policy",
+      "cookiesLink": "Cookies"
+    },
+    "cookiesPage": {
+      "title": "Cookie policy",
+      "lastUpdated": "Last updated: July 24, 2026",
+      "s1Title": "1. Essential cookies",
+      "s1Body": "Auth.js session — required for sign-in and security.",
+      "s2Title": "2. Preference cookies",
+      "s2Body": "NEXT_LOCALE — UI language. AUTO_TRANSLATE — consent for MyMemory auto-translation. Set only when you accept all or enable in Settings.",
+      "s3Title": "3. Managing cookies",
+      "s3Body": "A banner appears on first visit. Choose essential only or accept all. COOKIE_CONSENT is stored for 1 year.",
+      "privacyLink": "Privacy",
+      "termsLink": "Terms"
+    },
+    "contacts": {
+      "title": "Contact",
+      "body": "CalmExchange and GDPR inquiries:\n\nEmail: support@calmexchange.app\n\nReplace with a real address before production."
+    }
+  },
+  "cookies": {
+    "bannerTitle": "We use cookies",
+    "bannerBody": "Essential cookies for sign-in. Optional: UI language and meditation auto-translation (third-party MyMemory).",
+    "learnMore": "Learn more about cookies",
+    "essentialOnly": "Essential only",
+    "acceptAll": "Accept all"
+  },
+  "gdpr": {
+    "dataTitle": "Your data",
+    "dataDescription": "Download a copy of all data linked to your account (JSON).",
+    "exportButton": "Export data",
+    "autoTranslateTitle": "Meditation auto-translation",
+    "autoTranslateDescription": "Allow sending meditation text to MyMemory for translation. Without consent, original language is shown.",
+    "privacyLink": "Learn more",
+    "autoTranslateOn": "Auto-translation enabled",
+    "autoTranslateOff": "Auto-translation disabled",
+    "saveFailed": "Could not save",
+    "deleteTitle": "Delete account",
+    "deleteDescription": "Permanently deletes your account, meditations, likes, and translations.",
+    "deleteButton": "Delete account",
+    "deleteConfirmTitle": "Delete account?",
+    "deleteConfirmDescription": "This cannot be undone. All your data will be removed.",
+    "deleteConfirmAction": "Yes, delete",
+    "cancel": "Cancel",
+    "deleteFailed": "Could not delete account",
+    "loginRequired": "Sign in required"
   },
   "auth": {
     "title": "Sign in",
     "subtitle": "Sign in with Google to manage your meditations.",
     "signInGoogle": "Sign in with Google",
+    "signingIn": "Signing in…",
+    "consentPrefix": "I accept the",
+    "privacyLink": "privacy policy",
+    "consentAnd": "and",
+    "termsLink": "terms of use",
+    "consentSuffix": "and agree to data processing for Google sign-in.",
     "backHome": "Back to home",
     "errors": {
       "Configuration": "Auth.js configuration error. Check /api/auth/check-config and Vercel environment variables.",
@@ -150,9 +230,7 @@
   "settings": {
     "subtitle": "Settings",
     "language": "Language",
-    "languageDescription": "Choose the interface and meditation text language. Saved in the browser; translations are cached in the database.",
-    "comingSoonTitle": "Coming soon…",
-    "comingSoonDescription": "Profile, notification, and privacy settings will appear in future versions."
+    "languageDescription": "Choose the interface language. Meditation translations — in Privacy settings below."
   },
   "history": {
     "subtitle": "History",

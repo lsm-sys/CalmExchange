@@ -39,7 +39,9 @@
     "signIn": "Se connecter",
     "signOut": "Se déconnecter",
     "copyright": "© CalmExchange {year}",
-    "privacy": "Politique",
+    "privacy": "Confidentialité",
+    "terms": "Conditions",
+    "cookies": "Cookies",
     "contacts": "Contact"
   },
   "catalog": {
@@ -59,15 +61,93 @@
     "readOnlyHint": "Lecture seule — l'édition est disponible dans votre espace personnel"
   },
   "legal": {
-    "privacyTitle": "Politique de confidentialité",
-    "privacyBody": "Le texte complet sera publié prochainement. Pour les questions sur vos données, consultez la page contact.",
-    "contactsTitle": "Contact",
-    "contactsBody": "Pour CalmExchange : support@calmexchange.app (placeholder — indiquez une adresse réelle avant la production)."
+    "privacy": {
+      "title": "Politique de confidentialité",
+      "lastUpdated": "Dernière mise à jour : 24 juillet 2026",
+      "s1Title": "1. Responsable du traitement",
+      "s1Body": "CalmExchange (« Service ») traite les données personnelles conformément au RGPD (UE 2016/679). Contact : support@calmexchange.app.",
+      "s2Title": "2. Données collectées",
+      "s2Body": "Connexion Google : e-mail, nom, photo de profil, identifiant OAuth. Utilisation : textes de méditation, likes, préférences de langue, cookies de session.",
+      "s3Title": "3. Finalités et bases légales",
+      "s3Body": "Fourniture du Service (contrat). OAuth Google (consentement). Traduction automatique via MyMemory — uniquement avec votre opt-in explicite.",
+      "s4Title": "4. Sous-traitants et transferts",
+      "s4Body": "Google (OAuth), Vercel (hébergement), Neon (PostgreSQL), MyMemory (traduction — opt-in uniquement). Les données peuvent être traitées hors UE avec des garanties appropriées.",
+      "s5Title": "5. Vos droits",
+      "s5Body": "Accès, rectification, effacement, limitation, portabilité, opposition. Export et suppression du compte dans Paramètres. Réclamation auprès de votre autorité de contrôle.",
+      "s6Title": "6. Conservation",
+      "s6Body": "Données conservées tant que le compte est actif. Supprimées à la suppression du compte. Session JWT jusqu'à 30 jours.",
+      "termsLink": "Conditions d'utilisation",
+      "cookiesLink": "Politique cookies",
+      "contactsLink": "Contact"
+    },
+    "terms": {
+      "title": "Conditions d'utilisation",
+      "lastUpdated": "Dernière mise à jour : 24 juillet 2026",
+      "s1Title": "1. Service",
+      "s1Body": "CalmExchange permet de créer, stocker et partager des textes de méditation. En utilisant le Service, vous acceptez ces conditions.",
+      "s2Title": "2. Compte",
+      "s2Body": "Connexion via Google. Vous êtes responsable du contenu publié et des droits des tiers.",
+      "s3Title": "3. Contenu public",
+      "s3Body": "Les méditations publiques sont visibles par les autres. Ne publiez pas de données personnelles de tiers sans consentement.",
+      "s4Title": "4. Résiliation",
+      "s4Body": "Vous pouvez supprimer votre compte dans Paramètres. Nous pouvons restreindre l'accès en cas de violation.",
+      "privacyLink": "Politique de confidentialité",
+      "cookiesLink": "Cookies"
+    },
+    "cookiesPage": {
+      "title": "Politique cookies",
+      "lastUpdated": "Dernière mise à jour : 24 juillet 2026",
+      "s1Title": "1. Cookies essentiels",
+      "s1Body": "Session Auth.js — nécessaire pour la connexion et la sécurité.",
+      "s2Title": "2. Cookies de préférence",
+      "s2Body": "NEXT_LOCALE — langue de l'interface. AUTO_TRANSLATE — consentement pour la traduction MyMemory. Définis uniquement si vous acceptez tout ou activez dans Paramètres.",
+      "s3Title": "3. Gestion des cookies",
+      "s3Body": "Une bannière s'affiche à la première visite. Choisissez essentiels uniquement ou tout accepter. COOKIE_CONSENT est stocké 1 an.",
+      "privacyLink": "Confidentialité",
+      "termsLink": "Conditions"
+    },
+    "contacts": {
+      "title": "Contact",
+      "body": "CalmExchange et demandes RGPD :\n\nE-mail : support@calmexchange.app\n\nRemplacez par une adresse réelle avant la production."
+    }
+  },
+  "cookies": {
+    "bannerTitle": "Nous utilisons des cookies",
+    "bannerBody": "Cookies essentiels pour la connexion. Optionnels : langue de l'interface et traduction automatique des méditations (MyMemory, tiers).",
+    "learnMore": "En savoir plus sur les cookies",
+    "essentialOnly": "Essentiels uniquement",
+    "acceptAll": "Tout accepter"
+  },
+  "gdpr": {
+    "dataTitle": "Vos données",
+    "dataDescription": "Téléchargez une copie de toutes les données liées à votre compte (JSON).",
+    "exportButton": "Exporter les données",
+    "autoTranslateTitle": "Traduction automatique",
+    "autoTranslateDescription": "Autoriser l'envoi du texte de méditation à MyMemory pour traduction. Sans consentement, la langue originale est affichée.",
+    "privacyLink": "En savoir plus",
+    "autoTranslateOn": "Traduction automatique activée",
+    "autoTranslateOff": "Traduction automatique désactivée",
+    "saveFailed": "Enregistrement impossible",
+    "deleteTitle": "Supprimer le compte",
+    "deleteDescription": "Supprime définitivement votre compte, méditations, likes et traductions.",
+    "deleteButton": "Supprimer le compte",
+    "deleteConfirmTitle": "Supprimer le compte ?",
+    "deleteConfirmDescription": "Action irréversible. Toutes vos données seront supprimées.",
+    "deleteConfirmAction": "Oui, supprimer",
+    "cancel": "Annuler",
+    "deleteFailed": "Impossible de supprimer le compte",
+    "loginRequired": "Connexion requise"
   },
   "auth": {
     "title": "Connexion",
     "subtitle": "Connectez-vous avec Google pour gérer vos méditations.",
     "signInGoogle": "Se connecter avec Google",
+    "signingIn": "Connexion…",
+    "consentPrefix": "J'accepte la",
+    "privacyLink": "politique de confidentialité",
+    "consentAnd": "et les",
+    "termsLink": "conditions d'utilisation",
+    "consentSuffix": "et j'accepte le traitement des données pour la connexion Google.",
     "backHome": "Retour à l'accueil",
     "errors": {
       "Configuration": "Erreur de configuration Auth.js. Vérifiez /api/auth/check-config et les variables Vercel.",
@@ -150,9 +230,7 @@
   "settings": {
     "subtitle": "Paramètres",
     "language": "Langue",
-    "languageDescription": "Choisissez la langue de l'interface et du texte des méditations. Enregistré dans le navigateur ; traductions mises en cache.",
-    "comingSoonTitle": "Bientôt…",
-    "comingSoonDescription": "Les paramètres de profil, notifications et confidentialité arriveront prochainement."
+    "languageDescription": "Choisissez la langue de l'interface. Traductions des méditations — dans Paramètres de confidentialité ci-dessous."
   },
   "history": {
     "subtitle": "Historique",

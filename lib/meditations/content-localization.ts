@@ -28,6 +28,7 @@ export type LocalizedContent = {
 export async function resolveLocalizedContent(
   meditation: MeditationWithTranslations,
   targetLocale: Locale,
+  allowAutoTranslate = false,
 ): Promise<LocalizedContent> {
   const sourceLocale = meditation.sourceLocale as Locale;
 
@@ -44,6 +45,14 @@ export async function resolveLocalizedContent(
     return {
       title: cached.title,
       content: cached.content,
+      wasAutoTranslated: false,
+    };
+  }
+
+  if (!allowAutoTranslate) {
+    return {
+      title: meditation.title,
+      content: meditation.content,
       wasAutoTranslated: false,
     };
   }

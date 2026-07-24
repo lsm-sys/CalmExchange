@@ -1,8 +1,8 @@
 import { getTranslations } from "next-intl/server";
 import { LegalDocument } from "@/components/legal/LegalDocument";
 
-export default async function PrivacyPage() {
-  const t = await getTranslations("legal.privacy");
+export default async function CookiesPage() {
+  const t = await getTranslations("legal.cookiesPage");
 
   return (
     <LegalDocument
@@ -12,14 +12,10 @@ export default async function PrivacyPage() {
         { heading: t("s1Title"), body: t("s1Body") },
         { heading: t("s2Title"), body: t("s2Body") },
         { heading: t("s3Title"), body: t("s3Body") },
-        { heading: t("s4Title"), body: t("s4Body") },
-        { heading: t("s5Title"), body: t("s5Body") },
-        { heading: t("s6Title"), body: t("s6Body") },
       ]}
       relatedLinks={[
+        { href: "/privacy", label: t("privacyLink") },
         { href: "/terms", label: t("termsLink") },
-        { href: "/cookies", label: t("cookiesLink") },
-        { href: "/contacts", label: t("contactsLink") },
       ]}
     />
   );

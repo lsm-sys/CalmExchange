@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages, getTranslations } from "next-intl/server";
+import { CookieBanner } from "@/components/layout/CookieBanner";
 import { getMonthThemeId } from "@/lib/theme/month-theme";
 import "./globals.css";
 import "./month-themes.css";
@@ -27,6 +28,7 @@ export default async function RootLayout({
       <body>
         <NextIntlClientProvider messages={messages}>
           {children}
+          <CookieBanner />
         </NextIntlClientProvider>
       </body>
     </html>

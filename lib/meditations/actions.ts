@@ -6,6 +6,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireSession } from "@/lib/auth/session";
 import { getAppLocale } from "@/lib/i18n/get-locale";
+import { canAutoTranslate } from "@/lib/gdpr/consent";
 import {
   upsertMeditationTranslation,
 } from "@/lib/meditations/content-localization";
@@ -49,13 +50,19 @@ async function translateValidationError(error: z.ZodError): Promise<string> {
   return tErrors("invalidData");
 }
 
-/** После сохранения — фоново перевести на остальные языки. */
+/** После сохранения — перевести на остальные языки только при согласии пользователя. */
 async function syncOtherLocales(
+  userId: string,
   meditationId: string,
   sourceLocale: Locale,
   title: string,
   content: string,
 ) {
+  const allowed = await canAutoTranslate(userId);
+  if (!allowed) {
+    return;
+  }
+
   const others = locales.filter((l) => l !== sourceLocale);
 
   await Promise.all(
@@ -102,7 +109,7 @@ export async function createMeditation(
   });
 
   await upsertMeditationTranslation(meditation.id, locale, title, content);
-  await syncOtherLocales(meditation.id, locale, title, content);
+  await syncOtherLocales(session.user.id, meditation.id, locale, title, content);
 
   revalidateDashboard();
   return { ok: true, data: { id: meditation.id } };
@@ -152,7 +159,7 @@ export async function updateMeditation(
   await upsertMeditationTranslation(id, locale, title, content);
 
   if (locale === sourceLocale) {
-    await syncOtherLocales(id, sourceLocale, title, content);
+    await syncOtherLocales(session.user.id, id, sourceLocale, title, content);
   }
 
   revalidateDashboard();
@@ -241,7 +248,7 @@ export async function getMeditationItem(id: string) {
   const meditation = await prisma.meditation.findUnique({
     where: { id },
     include: {
-      owner: { select: { id: true, name: true, email: true } },
+      owner: { select: { id: true, name: true } },
       translations: {
         select: { locale: true, title: true, content: true },
       },
@@ -265,5 +272,6 @@ export async function getMeditationItem(id: string) {
     return null;
   }
 
-  return toMeditationItem(meditation, locale);
+  const allowAutoTranslate = await canAutoTranslate(session.user.id);
+  return toMeditationItem(meditation, locale, allowAutoTranslate);
 }

@@ -52,6 +52,7 @@ type MeditationRow = Meditation & {
 export async function toMeditationItem(
   meditation: MeditationRow,
   locale: Locale,
+  allowAutoTranslate = false,
 ): Promise<MeditationItem> {
   const localized: LocalizedContent = await resolveLocalizedContent(
     {
@@ -62,6 +63,7 @@ export async function toMeditationItem(
       translations: meditation.translations ?? [],
     },
     locale,
+    allowAutoTranslate,
   );
 
   return {
