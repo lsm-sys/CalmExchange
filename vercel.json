@@ -1,0 +1,5 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "node scripts/check-prisma-config.mjs && next build",
+  "installCommand": "npm install"
+}
