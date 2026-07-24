@@ -92,7 +92,8 @@
     "deleteTitle": "Supprimer la méditation ?",
     "deleteDescription": "« {title} » sera supprimée définitivement.",
     "liked": "Vous aimez",
-    "likePrompt": "Aimer ?"
+    "likePrompt": "Aimer ?",
+    "autoTranslated": "Traduction auto"
   },
   "like": {
     "remove": "Retirer le like",
@@ -105,7 +106,7 @@
   "settings": {
     "subtitle": "Paramètres",
     "language": "Langue",
-    "languageDescription": "Choisissez la langue de l'interface. Le choix est enregistré dans le navigateur.",
+    "languageDescription": "Choisissez la langue de l'interface et du texte des méditations. Enregistré dans le navigateur ; traductions mises en cache.",
     "comingSoonTitle": "Bientôt…",
     "comingSoonDescription": "Les paramètres de profil, notifications et confidentialité arriveront prochainement."
   },

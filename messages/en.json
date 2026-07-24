@@ -92,7 +92,8 @@
     "deleteTitle": "Delete meditation?",
     "deleteDescription": "«{title}» will be permanently deleted.",
     "liked": "You liked this",
-    "likePrompt": "Like this?"
+    "likePrompt": "Like this?",
+    "autoTranslated": "Auto-translated"
   },
   "like": {
     "remove": "Remove like",
@@ -105,7 +106,7 @@
   "settings": {
     "subtitle": "Settings",
     "language": "Language",
-    "languageDescription": "Choose the interface language. Your choice is saved in the browser.",
+    "languageDescription": "Choose the interface and meditation text language. Saved in the browser; translations are cached in the database.",
     "comingSoonTitle": "Coming soon…",
     "comingSoonDescription": "Profile, notification, and privacy settings will appear in future versions."
   },

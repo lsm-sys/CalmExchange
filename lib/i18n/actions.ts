@@ -18,5 +18,8 @@ export async function setLocale(locale: Locale) {
   });
 
   revalidatePath("/", "layout");
+  revalidatePath("/dashboard");
+  revalidatePath("/dashboard/public");
+  revalidatePath("/dashboard/favorites");
   return { ok: true as const };
 }

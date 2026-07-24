@@ -106,6 +106,11 @@ export function MeditationCard({
             <h3 className="truncate font-semibold text-foreground">
               {meditation.title}
             </h3>
+            {meditation.autoTranslated ? (
+              <span className="mt-0.5 inline-block rounded bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+                {t("autoTranslated")}
+              </span>
+            ) : null}
             {!isOwner && meditation.owner?.name ? (
               <p className="text-xs text-muted-foreground">
                 {meditation.owner.name}

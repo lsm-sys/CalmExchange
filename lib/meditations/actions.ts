@@ -5,6 +5,10 @@ import { getTranslations } from "next-intl/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireSession } from "@/lib/auth/session";
+import { getAppLocale } from "@/lib/i18n/get-locale";
+import {
+  upsertMeditationTranslation,
+} from "@/lib/meditations/content-localization";
 import {
   meditationFormSchema,
   meditationIdSchema,
@@ -13,6 +17,9 @@ import {
 } from "@/lib/meditations/schemas";
 import { getOwnedMeditation } from "@/lib/meditations/queries";
 import { toMeditationItem, toVisibility } from "@/lib/meditations/types";
+import { translateMeditationContent } from "@/lib/translation/translate-text";
+import type { Locale } from "@/i18n/routing";
+import { locales } from "@/i18n/routing";
 
 const DASHBOARD_PATHS = [
   "/dashboard",
@@ -42,10 +49,38 @@ async function translateValidationError(error: z.ZodError): Promise<string> {
   return tErrors("invalidData");
 }
 
+/** После сохранения — фоново перевести на остальные языки. */
+async function syncOtherLocales(
+  meditationId: string,
+  sourceLocale: Locale,
+  title: string,
+  content: string,
+) {
+  const others = locales.filter((l) => l !== sourceLocale);
+
+  await Promise.all(
+    others.map(async (target) => {
+      const translated = await translateMeditationContent(
+        title,
+        content,
+        sourceLocale,
+        target,
+      );
+      await upsertMeditationTranslation(
+        meditationId,
+        target,
+        translated.title,
+        translated.content,
+      );
+    }),
+  );
+}
+
 export async function createMeditation(
   input: MeditationFormValues,
 ): Promise<ActionResult<{ id: string }>> {
   const session = await requireSession();
+  const locale = await getAppLocale();
   const parsed = meditationFormSchema.safeParse(input);
 
   if (!parsed.success) {
@@ -60,10 +95,14 @@ export async function createMeditation(
       ownerId: session.user.id,
       title,
       content,
+      sourceLocale: locale,
       visibility,
       publishedAt: isPublic ? new Date() : null,
     },
   });
+
+  await upsertMeditationTranslation(meditation.id, locale, title, content);
+  await syncOtherLocales(meditation.id, locale, title, content);
 
   revalidateDashboard();
   return { ok: true, data: { id: meditation.id } };
@@ -74,6 +113,7 @@ export async function updateMeditation(
   input: MeditationFormValues,
 ): Promise<ActionResult> {
   const session = await requireSession();
+  const locale = await getAppLocale();
   const t = await getTranslations("errors");
   const idParsed = meditationIdSchema.safeParse({ id });
   const formParsed = meditationFormSchema.safeParse(input);
@@ -92,17 +132,28 @@ export async function updateMeditation(
 
   const { title, content, isPublic } = formParsed.data;
   const visibility = toVisibility(isPublic);
+  const sourceLocale = owned.sourceLocale as Locale;
+
+  const updateMain =
+    locale === sourceLocale
+      ? { title, content }
+      : {};
 
   await prisma.meditation.update({
     where: { id },
     data: {
-      title,
-      content,
+      ...updateMain,
       visibility,
       publishedAt:
         isPublic && !owned.publishedAt ? new Date() : owned.publishedAt,
     },
   });
+
+  await upsertMeditationTranslation(id, locale, title, content);
+
+  if (locale === sourceLocale) {
+    await syncOtherLocales(id, sourceLocale, title, content);
+  }
 
   revalidateDashboard();
   return { ok: true, data: undefined };
@@ -186,9 +237,21 @@ export async function toggleFavorite(
 
 export async function getMeditationItem(id: string) {
   const session = await requireSession();
+  const locale = await getAppLocale();
   const meditation = await prisma.meditation.findUnique({
     where: { id },
-    include: { owner: { select: { id: true, name: true, email: true } } },
+    include: {
+      owner: { select: { id: true, name: true, email: true } },
+      translations: {
+        select: { locale: true, title: true, content: true },
+      },
+      _count: { select: { likes: true } },
+      likes: {
+        where: { userId: session.user.id },
+        select: { id: true },
+        take: 1,
+      },
+    },
   });
 
   if (!meditation) {
@@ -202,5 +265,5 @@ export async function getMeditationItem(id: string) {
     return null;
   }
 
-  return toMeditationItem(meditation);
+  return toMeditationItem(meditation, locale);
 }

@@ -3,6 +3,7 @@ import {
   listMyMeditations,
 } from "@/lib/meditations";
 import { requireSession } from "@/lib/auth/session";
+import { getAppLocale } from "@/lib/i18n/get-locale";
 import { MeditationsView } from "@/components/dashboard/MeditationsView";
 
 type DashboardPageProps = {
@@ -18,7 +19,8 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
     search: params.q,
   });
 
-  const data = await listMyMeditations(session.user.id, listParams);
+  const locale = await getAppLocale();
+  const data = await listMyMeditations(session.user.id, listParams, locale);
 
   return (
     <MeditationsView

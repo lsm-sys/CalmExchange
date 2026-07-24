@@ -3,6 +3,7 @@ import {
   listMeditationsSchema,
 } from "@/lib/meditations";
 import { requireSession } from "@/lib/auth/session";
+import { getAppLocale } from "@/lib/i18n/get-locale";
 import { MeditationsView } from "@/components/dashboard/MeditationsView";
 
 type FavoritesPageProps = {
@@ -18,7 +19,8 @@ export default async function FavoritesPage({ searchParams }: FavoritesPageProps
     search: params.q,
   });
 
-  const data = await listFavoriteMeditations(session.user.id, listParams);
+  const locale = await getAppLocale();
+  const data = await listFavoriteMeditations(session.user.id, listParams, locale);
 
   return (
     <MeditationsView

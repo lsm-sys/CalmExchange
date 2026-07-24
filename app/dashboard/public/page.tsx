@@ -3,6 +3,7 @@ import {
   publicListSchema,
 } from "@/lib/meditations";
 import { requireSession } from "@/lib/auth/session";
+import { getAppLocale } from "@/lib/i18n/get-locale";
 import { MeditationsView } from "@/components/dashboard/MeditationsView";
 
 type PublicPageProps = {
@@ -21,7 +22,8 @@ export default async function PublicMeditationsPage({
     sort: params.sort,
   });
 
-  const data = await listPublicMeditations(session.user.id, listParams);
+  const locale = await getAppLocale();
+  const data = await listPublicMeditations(session.user.id, listParams, locale);
 
   return (
     <MeditationsView

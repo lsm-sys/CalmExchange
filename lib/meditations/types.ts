@@ -1,5 +1,10 @@
 import type { Meditation, User, Visibility } from "@prisma/client";
+import type { Locale } from "@/i18n/routing";
 import { isPublicVisibility } from "@/lib/utils";
+import {
+  resolveLocalizedContent,
+  type LocalizedContent,
+} from "@/lib/meditations/content-localization";
 
 /** DTO медитации для UI (visibility → isPublic). */
 export type MeditationItem = {
@@ -9,13 +14,14 @@ export type MeditationItem = {
   content: string;
   isPublic: boolean;
   isFavorite: boolean;
+  sourceLocale: string;
   createdAt: Date;
   updatedAt: Date;
   owner?: Pick<User, "id" | "name" | "email">;
-  /** Количество лайков (только для публичного списка). */
   likesCount?: number;
-  /** Лайкнул ли текущий пользователь (только для публичного списка). */
   likedByMe?: boolean;
+  /** Контент автоматически переведён при показе */
+  autoTranslated?: boolean;
 };
 
 export type PaginatedMeditations = {
@@ -30,19 +36,36 @@ type MeditationRow = Meditation & {
   owner?: Pick<User, "id" | "name" | "email">;
   _count?: { likes: number };
   likes?: { id: string }[];
+  translations?: { locale: string; title: string; content: string }[];
 };
 
-export function toMeditationItem(meditation: MeditationRow): MeditationItem {
+export async function toMeditationItem(
+  meditation: MeditationRow,
+  locale: Locale,
+): Promise<MeditationItem> {
+  const localized: LocalizedContent = await resolveLocalizedContent(
+    {
+      id: meditation.id,
+      title: meditation.title,
+      content: meditation.content,
+      sourceLocale: meditation.sourceLocale,
+      translations: meditation.translations ?? [],
+    },
+    locale,
+  );
+
   return {
     id: meditation.id,
     userId: meditation.ownerId,
-    title: meditation.title,
-    content: meditation.content,
+    title: localized.title,
+    content: localized.content,
     isPublic: isPublicVisibility(meditation.visibility),
     isFavorite: meditation.isFavorite,
+    sourceLocale: meditation.sourceLocale,
     createdAt: meditation.createdAt,
     updatedAt: meditation.updatedAt,
     owner: meditation.owner,
+    autoTranslated: localized.wasAutoTranslated,
     ...(meditation._count !== undefined
       ? {
           likesCount: meditation._count.likes,

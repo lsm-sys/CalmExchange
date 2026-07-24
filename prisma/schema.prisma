@@ -88,6 +88,8 @@ model Meditation {
   title       String
   content     String
   description String?
+  /** Язык оригинала (title/content на Meditation — канонический источник). */
+  sourceLocale String    @default("ru")
   categoryId  String?
   category    Category?  @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   visibility  Visibility @default(PRIVATE)
@@ -97,10 +99,25 @@ model Meditation {
   publishedAt DateTime?
   votes       Vote[]
   likes       Like[]
+  translations MeditationTranslation[]
 
   @@index([ownerId, updatedAt])
   @@index([visibility, createdAt])
   @@index([ownerId, isFavorite])
+}
+
+// Локализованный title/content медитации (ru / en / fr).
+model MeditationTranslation {
+  id           String     @id @default(cuid())
+  meditationId String
+  meditation   Meditation @relation(fields: [meditationId], references: [id], onDelete: Cascade)
+  locale       String
+  title        String
+  content      String     @db.Text
+  updatedAt    DateTime   @updatedAt
+
+  @@unique([meditationId, locale])
+  @@index([locale])
 }
 
 model Vote {

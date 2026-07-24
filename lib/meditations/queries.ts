@@ -1,9 +1,16 @@
 import { prisma } from "@/lib/prisma";
 import { Visibility, type Prisma } from "@prisma/client";
+import type { Locale } from "@/i18n/routing";
 import type { ListMeditationsParams, PublicListParams } from "./schemas";
 import { toMeditationItem, type PaginatedMeditations } from "./types";
 
-function buildSearchFilter(search?: string) {
+const translationInclude = {
+  translations: {
+    select: { locale: true, title: true, content: true },
+  },
+} as const;
+
+function buildSearchFilter(search: string | undefined, locale: Locale) {
   if (!search?.trim()) {
     return undefined;
   }
@@ -13,6 +20,17 @@ function buildSearchFilter(search?: string) {
     OR: [
       { title: { contains: q, mode: "insensitive" as const } },
       { content: { contains: q, mode: "insensitive" as const } },
+      {
+        translations: {
+          some: {
+            locale,
+            OR: [
+              { title: { contains: q, mode: "insensitive" as const } },
+              { content: { contains: q, mode: "insensitive" as const } },
+            ],
+          },
+        },
+      },
     ],
   };
 }
@@ -20,14 +38,14 @@ function buildSearchFilter(search?: string) {
 async function paginateMeditations(
   where: Prisma.MeditationWhereInput,
   params: ListMeditationsParams,
+  locale: Locale,
   options?: {
     includeOwner?: boolean;
-    /** Подгрузить likesCount и likedByMe для карточек */
     includeLikesForUserId?: string;
   },
 ): Promise<PaginatedMeditations> {
   const { page, pageSize, search } = params;
-  const searchFilter = buildSearchFilter(search);
+  const searchFilter = buildSearchFilter(search, locale);
   const includeOwner = options?.includeOwner ?? false;
   const likesUserId = options?.includeLikesForUserId;
 
@@ -41,6 +59,7 @@ async function paginateMeditations(
       skip: (page - 1) * pageSize,
       take: pageSize,
       include: {
+        ...translationInclude,
         ...(includeOwner
           ? { owner: { select: { id: true, name: true, email: true } } }
           : {}),
@@ -58,8 +77,12 @@ async function paginateMeditations(
     }),
   ]);
 
+  const items = await Promise.all(
+    rows.map((row) => toMeditationItem(row, locale)),
+  );
+
   return {
-    items: rows.map(toMeditationItem),
+    items,
     total,
     page,
     pageSize,
@@ -67,23 +90,23 @@ async function paginateMeditations(
   };
 }
 
-/** Медитации текущего пользователя с пагинацией и поиском. */
 export async function listMyMeditations(
   userId: string,
   params: ListMeditationsParams,
+  locale: Locale,
 ): Promise<PaginatedMeditations> {
-  return paginateMeditations({ ownerId: userId }, params, {
+  return paginateMeditations({ ownerId: userId }, params, locale, {
     includeLikesForUserId: userId,
   });
 }
 
-/** Все публичные медитации с лайками и сортировкой. */
 export async function listPublicMeditations(
   userId: string,
   params: PublicListParams,
+  locale: Locale,
 ): Promise<PaginatedMeditations> {
   const { page, pageSize, search, sort } = params;
-  const searchFilter = buildSearchFilter(search);
+  const searchFilter = buildSearchFilter(search, locale);
 
   const whereClause: Prisma.MeditationWhereInput = searchFilter
     ? { AND: [{ visibility: Visibility.PUBLIC }, searchFilter] }
@@ -102,6 +125,7 @@ export async function listPublicMeditations(
       skip: (page - 1) * pageSize,
       take: pageSize,
       include: {
+        ...translationInclude,
         owner: { select: { id: true, name: true, email: true } },
         _count: { select: { likes: true } },
         likes: {
@@ -113,8 +137,12 @@ export async function listPublicMeditations(
     }),
   ]);
 
+  const items = await Promise.all(
+    rows.map((row) => toMeditationItem(row, locale)),
+  );
+
   return {
-    items: rows.map(toMeditationItem),
+    items,
     total,
     page,
     pageSize,
@@ -122,31 +150,32 @@ export async function listPublicMeditations(
   };
 }
 
-/** Избранные медитации текущего пользователя. */
 export async function listFavoriteMeditations(
   userId: string,
   params: ListMeditationsParams,
+  locale: Locale,
 ): Promise<PaginatedMeditations> {
   return paginateMeditations(
     { ownerId: userId, isFavorite: true },
     params,
+    locale,
     { includeLikesForUserId: userId },
   );
 }
 
-/** Одна медитация владельца — для проверки прав перед update/delete. */
 export async function getOwnedMeditation(meditationId: string, userId: string) {
   return prisma.meditation.findFirst({
     where: { id: meditationId, ownerId: userId },
+    include: translationInclude,
   });
 }
 
-/** Одна медитация по id (для edit dialog). */
 export async function getMeditationById(meditationId: string) {
-  return prisma.meditation.findUnique({ where: { id: meditationId } });
+  return prisma.meditation.findUnique({
+    where: { id: meditationId },
+    include: translationInclude,
+  });
 }
-
-// --- Legacy read helpers (главная и др.) ---
 
 export async function getVisibleMeditations(userId: string | null) {
   return prisma.meditation.findMany({
@@ -159,6 +188,7 @@ export async function getVisibleMeditations(userId: string | null) {
     orderBy: { updatedAt: "desc" },
     include: {
       owner: { select: { id: true, name: true, email: true } },
+      ...translationInclude,
     },
   });
 }
@@ -167,6 +197,7 @@ export async function getMyMeditations(userId: string) {
   return prisma.meditation.findMany({
     where: { ownerId: userId },
     orderBy: { updatedAt: "desc" },
+    include: translationInclude,
   });
 }
 
@@ -176,6 +207,7 @@ export async function getMeditationIfAllowed(
 ) {
   const meditation = await prisma.meditation.findUnique({
     where: { id: meditationId },
+    include: translationInclude,
   });
 
   if (!meditation) {
