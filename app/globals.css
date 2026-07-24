@@ -2,32 +2,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
-:root {
-  --background: oklch(0.985 0.002 247);
-  --foreground: oklch(0.21 0.02 255);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.21 0.02 255);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.21 0.02 255);
-  --primary: oklch(0.45 0.08 250);
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.96 0.01 250);
-  --secondary-foreground: oklch(0.28 0.03 255);
-  --muted: oklch(0.96 0.008 250);
-  --muted-foreground: oklch(0.52 0.02 255);
-  --accent: oklch(0.94 0.02 235);
-  --accent-foreground: oklch(0.28 0.03 255);
-  --destructive: oklch(0.58 0.2 25);
-  --destructive-foreground: oklch(0.99 0 0);
-  --border: oklch(0.91 0.01 250);
-  --input: oklch(0.91 0.01 250);
-  --ring: oklch(0.62 0.06 245);
-  --radius: 0.75rem;
-  --sidebar-from: oklch(0.94 0.04 235);
-  --sidebar-to: oklch(0.88 0.06 230);
-  --sidebar-foreground: oklch(0.28 0.04 250);
-  --sidebar-accent: oklch(0.99 0.01 240 / 0.75);
-}
+/* Базовые токены — палитра месяца задаётся в month-themes.css через html[data-month] */
 
 @theme inline {
   --color-background: var(--background);

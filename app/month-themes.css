@@ -1,0 +1,335 @@
+/**
+ * Месячные палитры CalmExchange — климат Центральной Европы.
+ * Активируется через data-month на <html> (см. lib/theme/month-theme.ts).
+ */
+
+:root {
+  --destructive: oklch(0.58 0.2 25);
+  --destructive-foreground: oklch(0.99 0 0);
+  --radius: 0.75rem;
+}
+
+/* Январь — мороз, снег, ледяной рассвет */
+html[data-month="january"] {
+  --background: oklch(0.98 0.01 235);
+  --foreground: oklch(0.22 0.035 240);
+  --card: oklch(0.995 0.006 235);
+  --card-foreground: oklch(0.22 0.035 240);
+  --popover: oklch(0.995 0.006 235);
+  --popover-foreground: oklch(0.22 0.035 240);
+  --primary: oklch(0.48 0.09 230);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.95 0.018 235);
+  --secondary-foreground: oklch(0.28 0.04 240);
+  --muted: oklch(0.95 0.012 235);
+  --muted-foreground: oklch(0.5 0.03 240);
+  --accent: oklch(0.92 0.028 235);
+  --accent-foreground: oklch(0.28 0.04 240);
+  --border: oklch(0.9 0.018 235);
+  --input: oklch(0.9 0.018 235);
+  --ring: oklch(0.62 0.07 230);
+  --sidebar-from: oklch(0.93 0.035 235);
+  --sidebar-to: oklch(0.86 0.055 230);
+  --sidebar-foreground: oklch(0.28 0.04 240);
+  --sidebar-accent: oklch(0.99 0.01 235 / 0.75);
+}
+
+/* Февраль — поздняя зима, сумеречный сиренево-серый */
+html[data-month="february"] {
+  --background: oklch(0.97 0.012 290);
+  --foreground: oklch(0.24 0.03 285);
+  --card: oklch(0.99 0.008 290);
+  --card-foreground: oklch(0.24 0.03 285);
+  --popover: oklch(0.99 0.008 290);
+  --popover-foreground: oklch(0.24 0.03 285);
+  --primary: oklch(0.5 0.07 285);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.94 0.02 290);
+  --secondary-foreground: oklch(0.3 0.035 285);
+  --muted: oklch(0.94 0.015 290);
+  --muted-foreground: oklch(0.52 0.03 285);
+  --accent: oklch(0.91 0.025 285);
+  --accent-foreground: oklch(0.3 0.035 285);
+  --border: oklch(0.89 0.018 290);
+  --input: oklch(0.89 0.018 290);
+  --ring: oklch(0.64 0.06 285);
+  --sidebar-from: oklch(0.92 0.03 290);
+  --sidebar-to: oklch(0.85 0.045 285);
+  --sidebar-foreground: oklch(0.3 0.035 285);
+  --sidebar-accent: oklch(0.99 0.01 290 / 0.75);
+}
+
+/* Март — оттепель, первые ростки */
+html[data-month="march"] {
+  --background: oklch(0.97 0.018 140);
+  --foreground: oklch(0.24 0.04 145);
+  --card: oklch(0.99 0.01 140);
+  --card-foreground: oklch(0.24 0.04 145);
+  --popover: oklch(0.99 0.01 140);
+  --popover-foreground: oklch(0.24 0.04 145);
+  --primary: oklch(0.48 0.11 145);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.94 0.025 140);
+  --secondary-foreground: oklch(0.3 0.045 145);
+  --muted: oklch(0.94 0.018 140);
+  --muted-foreground: oklch(0.52 0.035 145);
+  --accent: oklch(0.91 0.035 135);
+  --accent-foreground: oklch(0.3 0.045 145);
+  --border: oklch(0.89 0.02 140);
+  --input: oklch(0.89 0.02 140);
+  --ring: oklch(0.62 0.08 145);
+  --sidebar-from: oklch(0.92 0.04 140);
+  --sidebar-to: oklch(0.85 0.065 145);
+  --sidebar-foreground: oklch(0.3 0.045 145);
+  --sidebar-accent: oklch(0.99 0.01 140 / 0.75);
+}
+
+/* Апрель — весна, цветение */
+html[data-month="april"] {
+  --background: oklch(0.98 0.018 350);
+  --foreground: oklch(0.24 0.04 150);
+  --card: oklch(0.995 0.012 350);
+  --card-foreground: oklch(0.24 0.04 150);
+  --popover: oklch(0.995 0.012 350);
+  --popover-foreground: oklch(0.24 0.04 150);
+  --primary: oklch(0.52 0.12 145);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.95 0.025 350);
+  --secondary-foreground: oklch(0.3 0.045 150);
+  --muted: oklch(0.95 0.018 350);
+  --muted-foreground: oklch(0.52 0.035 150);
+  --accent: oklch(0.93 0.045 10);
+  --accent-foreground: oklch(0.32 0.06 10);
+  --border: oklch(0.9 0.022 350);
+  --input: oklch(0.9 0.022 350);
+  --ring: oklch(0.64 0.09 145);
+  --sidebar-from: oklch(0.93 0.04 350);
+  --sidebar-to: oklch(0.86 0.07 145);
+  --sidebar-foreground: oklch(0.3 0.045 150);
+  --sidebar-accent: oklch(0.99 0.015 350 / 0.75);
+}
+
+/* Май — пышная зелень лугов */
+html[data-month="may"] {
+  --background: oklch(0.98 0.022 130);
+  --foreground: oklch(0.23 0.045 145);
+  --card: oklch(0.995 0.015 130);
+  --card-foreground: oklch(0.23 0.045 145);
+  --popover: oklch(0.995 0.015 130);
+  --popover-foreground: oklch(0.23 0.045 145);
+  --primary: oklch(0.5 0.14 140);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.94 0.03 130);
+  --secondary-foreground: oklch(0.29 0.05 145);
+  --muted: oklch(0.94 0.022 130);
+  --muted-foreground: oklch(0.51 0.04 145);
+  --accent: oklch(0.92 0.05 125);
+  --accent-foreground: oklch(0.29 0.05 145);
+  --border: oklch(0.89 0.025 130);
+  --input: oklch(0.89 0.025 130);
+  --ring: oklch(0.63 0.1 140);
+  --sidebar-from: oklch(0.92 0.05 130);
+  --sidebar-to: oklch(0.84 0.08 140);
+  --sidebar-foreground: oklch(0.29 0.05 145);
+  --sidebar-accent: oklch(0.99 0.015 130 / 0.75);
+}
+
+/* Июнь — раннее лето, солнечные дни */
+html[data-month="june"] {
+  --background: oklch(0.98 0.02 110);
+  --foreground: oklch(0.24 0.04 155);
+  --card: oklch(0.995 0.014 110);
+  --card-foreground: oklch(0.24 0.04 155);
+  --popover: oklch(0.995 0.014 110);
+  --popover-foreground: oklch(0.24 0.04 155);
+  --primary: oklch(0.52 0.13 155);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.95 0.028 110);
+  --secondary-foreground: oklch(0.3 0.045 155);
+  --muted: oklch(0.95 0.02 110);
+  --muted-foreground: oklch(0.52 0.035 155);
+  --accent: oklch(0.93 0.045 100);
+  --accent-foreground: oklch(0.3 0.045 155);
+  --border: oklch(0.9 0.022 110);
+  --input: oklch(0.9 0.022 110);
+  --ring: oklch(0.64 0.09 155);
+  --sidebar-from: oklch(0.93 0.045 115);
+  --sidebar-to: oklch(0.86 0.075 150);
+  --sidebar-foreground: oklch(0.3 0.045 155);
+  --sidebar-accent: oklch(0.99 0.015 110 / 0.75);
+}
+
+/* Июль — разгар лета, луга и тёплое небо */
+html[data-month="july"] {
+  --background: oklch(0.98 0.022 95);
+  --foreground: oklch(0.25 0.045 145);
+  --card: oklch(0.995 0.016 95);
+  --card-foreground: oklch(0.25 0.045 145);
+  --popover: oklch(0.995 0.016 95);
+  --popover-foreground: oklch(0.25 0.045 145);
+  --primary: oklch(0.5 0.14 145);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.95 0.03 95);
+  --secondary-foreground: oklch(0.3 0.05 145);
+  --muted: oklch(0.95 0.022 95);
+  --muted-foreground: oklch(0.52 0.04 145);
+  --accent: oklch(0.94 0.055 85);
+  --accent-foreground: oklch(0.32 0.06 85);
+  --border: oklch(0.9 0.025 95);
+  --input: oklch(0.9 0.025 95);
+  --ring: oklch(0.63 0.1 145);
+  --sidebar-from: oklch(0.93 0.05 120);
+  --sidebar-to: oklch(0.85 0.085 140);
+  --sidebar-foreground: oklch(0.3 0.05 145);
+  --sidebar-accent: oklch(0.99 0.018 95 / 0.75);
+}
+
+/* Август — позднее лето, жатва, золотая пшеница */
+html[data-month="august"] {
+  --background: oklch(0.97 0.028 80);
+  --foreground: oklch(0.26 0.05 70);
+  --card: oklch(0.99 0.02 80);
+  --card-foreground: oklch(0.26 0.05 70);
+  --popover: oklch(0.99 0.02 80);
+  --popover-foreground: oklch(0.26 0.05 70);
+  --primary: oklch(0.55 0.15 70);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.94 0.035 80);
+  --secondary-foreground: oklch(0.32 0.055 70);
+  --muted: oklch(0.94 0.028 80);
+  --muted-foreground: oklch(0.53 0.045 70);
+  --accent: oklch(0.92 0.065 75);
+  --accent-foreground: oklch(0.32 0.06 70);
+  --border: oklch(0.89 0.03 80);
+  --input: oklch(0.89 0.03 80);
+  --ring: oklch(0.65 0.12 70);
+  --sidebar-from: oklch(0.92 0.055 85);
+  --sidebar-to: oklch(0.84 0.09 70);
+  --sidebar-foreground: oklch(0.32 0.055 70);
+  --sidebar-accent: oklch(0.99 0.02 80 / 0.75);
+}
+
+/* Сентябрь — ранняя осень, золотая листва */
+html[data-month="september"] {
+  --background: oklch(0.96 0.032 70);
+  --foreground: oklch(0.27 0.05 55);
+  --card: oklch(0.98 0.025 70);
+  --card-foreground: oklch(0.27 0.05 55);
+  --popover: oklch(0.98 0.025 70);
+  --popover-foreground: oklch(0.27 0.05 55);
+  --primary: oklch(0.5 0.13 55);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.93 0.038 70);
+  --secondary-foreground: oklch(0.33 0.055 55);
+  --muted: oklch(0.93 0.03 70);
+  --muted-foreground: oklch(0.54 0.045 55);
+  --accent: oklch(0.9 0.055 50);
+  --accent-foreground: oklch(0.33 0.06 50);
+  --border: oklch(0.88 0.032 70);
+  --input: oklch(0.88 0.032 70);
+  --ring: oklch(0.62 0.11 55);
+  --sidebar-from: oklch(0.91 0.05 65);
+  --sidebar-to: oklch(0.83 0.08 55);
+  --sidebar-foreground: oklch(0.33 0.055 55);
+  --sidebar-accent: oklch(0.98 0.025 70 / 0.75);
+}
+
+/* Октябрь — осень, тыквы и туманные утра */
+html[data-month="october"] {
+  --background: oklch(0.95 0.038 55);
+  --foreground: oklch(0.28 0.055 45);
+  --card: oklch(0.97 0.03 55);
+  --card-foreground: oklch(0.28 0.055 45);
+  --popover: oklch(0.97 0.03 55);
+  --popover-foreground: oklch(0.28 0.055 45);
+  --primary: oklch(0.48 0.15 45);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.92 0.04 55);
+  --secondary-foreground: oklch(0.34 0.06 45);
+  --muted: oklch(0.92 0.035 55);
+  --muted-foreground: oklch(0.55 0.05 45);
+  --accent: oklch(0.88 0.065 40);
+  --accent-foreground: oklch(0.34 0.065 40);
+  --border: oklch(0.87 0.035 55);
+  --input: oklch(0.87 0.035 55);
+  --ring: oklch(0.6 0.13 45);
+  --sidebar-from: oklch(0.9 0.055 50);
+  --sidebar-to: oklch(0.81 0.09 42);
+  --sidebar-foreground: oklch(0.34 0.06 45);
+  --sidebar-accent: oklch(0.97 0.03 55 / 0.75);
+}
+
+/* Ноябрь — поздняя осень, туман и голые деревья */
+html[data-month="november"] {
+  --background: oklch(0.94 0.018 60);
+  --foreground: oklch(0.28 0.03 55);
+  --card: oklch(0.96 0.014 60);
+  --card-foreground: oklch(0.28 0.03 55);
+  --popover: oklch(0.96 0.014 60);
+  --popover-foreground: oklch(0.28 0.03 55);
+  --primary: oklch(0.42 0.045 55);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.91 0.02 60);
+  --secondary-foreground: oklch(0.34 0.035 55);
+  --muted: oklch(0.91 0.015 60);
+  --muted-foreground: oklch(0.55 0.03 55);
+  --accent: oklch(0.88 0.022 55);
+  --accent-foreground: oklch(0.34 0.035 55);
+  --border: oklch(0.86 0.018 60);
+  --input: oklch(0.86 0.018 60);
+  --ring: oklch(0.58 0.05 55);
+  --sidebar-from: oklch(0.89 0.025 60);
+  --sidebar-to: oklch(0.82 0.035 55);
+  --sidebar-foreground: oklch(0.34 0.035 55);
+  --sidebar-accent: oklch(0.96 0.014 60 / 0.75);
+}
+
+/* Декабрь — зима, сосны и первый снег */
+html[data-month="december"] {
+  --background: oklch(0.97 0.015 160);
+  --foreground: oklch(0.24 0.04 160);
+  --card: oklch(0.99 0.01 160);
+  --card-foreground: oklch(0.24 0.04 160);
+  --popover: oklch(0.99 0.01 160);
+  --popover-foreground: oklch(0.24 0.04 160);
+  --primary: oklch(0.45 0.11 155);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.94 0.022 160);
+  --secondary-foreground: oklch(0.3 0.05 160);
+  --muted: oklch(0.94 0.018 160);
+  --muted-foreground: oklch(0.52 0.035 160);
+  --accent: oklch(0.91 0.04 150);
+  --accent-foreground: oklch(0.3 0.05 160);
+  --border: oklch(0.89 0.02 160);
+  --input: oklch(0.89 0.02 160);
+  --ring: oklch(0.6 0.09 155);
+  --sidebar-from: oklch(0.92 0.035 160);
+  --sidebar-to: oklch(0.84 0.06 155);
+  --sidebar-foreground: oklch(0.3 0.05 160);
+  --sidebar-accent: oklch(0.99 0.012 160 / 0.75);
+}
+
+/* Fallback до гидратации / без data-month — июль */
+html:not([data-month]) {
+  --background: oklch(0.98 0.022 95);
+  --foreground: oklch(0.25 0.045 145);
+  --card: oklch(0.995 0.016 95);
+  --card-foreground: oklch(0.25 0.045 145);
+  --popover: oklch(0.995 0.016 95);
+  --popover-foreground: oklch(0.25 0.045 145);
+  --primary: oklch(0.5 0.14 145);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.95 0.03 95);
+  --secondary-foreground: oklch(0.3 0.05 145);
+  --muted: oklch(0.95 0.022 95);
+  --muted-foreground: oklch(0.52 0.04 145);
+  --accent: oklch(0.94 0.055 85);
+  --accent-foreground: oklch(0.32 0.06 85);
+  --border: oklch(0.9 0.025 95);
+  --input: oklch(0.9 0.025 95);
+  --ring: oklch(0.63 0.1 145);
+  --sidebar-from: oklch(0.93 0.05 120);
+  --sidebar-to: oklch(0.85 0.085 140);
+  --sidebar-foreground: oklch(0.3 0.05 145);
+  --sidebar-accent: oklch(0.99 0.018 95 / 0.75);
+}
