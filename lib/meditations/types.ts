@@ -1,10 +1,17 @@
-import type { Meditation, User, Visibility } from "@prisma/client";
+import type { Meditation, Visibility } from "@prisma/client";
 import type { Locale } from "@/i18n/routing";
 import { isPublicVisibility } from "@/lib/utils";
 import {
   resolveLocalizedContent,
   type LocalizedContent,
 } from "@/lib/meditations/content-localization";
+
+/** Публичный профиль автора (email опционален — минимизация данных). */
+export type MeditationOwnerPreview = {
+  id: string;
+  name: string | null;
+  email?: string | null;
+};
 
 /** DTO медитации для UI (visibility → isPublic). */
 export type MeditationItem = {
@@ -17,7 +24,7 @@ export type MeditationItem = {
   sourceLocale: string;
   createdAt: Date;
   updatedAt: Date;
-  owner?: Pick<User, "id" | "name" | "email">;
+  owner?: MeditationOwnerPreview;
   likesCount?: number;
   likedByMe?: boolean;
   /** Контент автоматически переведён при показе */
@@ -35,7 +42,7 @@ export type PaginatedMeditations = {
 };
 
 type MeditationRow = Meditation & {
-  owner?: Pick<User, "id" | "name" | "email">;
+  owner?: MeditationOwnerPreview;
   category?: { category: string } | null;
   _count?: { likes: number };
   likes?: { id: string }[];
