@@ -16,9 +16,6 @@
     "view-db": "next dev",
     "neon:init": "neon init --agent cursor"
   },
-  "prisma": {
-    "seed": "tsx prisma/seed.ts"
-  },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.2",
     "@hookform/resolvers": "^5.4.0",
@@ -51,6 +48,7 @@
     "@types/pg": "^8.20.0",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
+    "dotenv": "^16.6.1",
     "eslint": "^9.31.0",
     "eslint-config-next": "^15.4.1",
     "neonctl": "^2.33.2",
